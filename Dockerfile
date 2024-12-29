@@ -14,7 +14,8 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o egovchecker .
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o egovchecker .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ./build_with_flags.sh -o egovchecker
 
 FROM alpine:latest
 
