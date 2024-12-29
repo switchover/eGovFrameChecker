@@ -1,20 +1,32 @@
+# Top-most EditorConfig file
 root = true
 
+# Default style
 [*]
-charset = utf-8
+# Unix-style newlines
 end_of_line = lf
+# Set default charset
+charset = utf-8
+
+# Indent related settings
+tab_width = 4
 indent_size = 4
 indent_style = space
-insert_final_newline = false
-max_line_length = 120
-tab_width = 4
+
+# Remote any whitespace characters preceding newline character
 trim_trailing_whitespace = true
 
+max_line_length = 120
+insert_final_newline = false
+
+# Markdown file style
 [*.md]
 trim_trailing_whitespace = false
 
+# Go lang default style
 [{*.go,*.go2}]
 indent_style = tab
 
+# Yaml file style
 [{*.yaml,*.yml}]
 indent_size = 2
