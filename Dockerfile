@@ -1,6 +1,9 @@
 FROM golang:1.23 AS builder
 LABEL authors="Vincent Han <switchover@gmail.com>"
 
+# Timezone
+ENV TZ=Asia/Seoul
+
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
@@ -18,6 +21,9 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ./build_with_flags.sh -o egovchecker
 
 FROM alpine:latest
+
+# Timezone
+ENV TZ=Asia/Seoul
 
 # Set the working directory
 WORKDIR /root/
