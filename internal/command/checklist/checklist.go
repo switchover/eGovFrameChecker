@@ -1,0 +1,5 @@
+package checklist
+
+func Check() {
+
+}

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/switchover/eGovFrameChecker/cmd/ver"
 	"github.com/spf13/cobra"
+	"github.com/switchover/eGovFrameChecker/cmd/ver"
 )
 
 func init() {

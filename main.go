@@ -1,7 +1,15 @@
 package main
 
-import "github.com/switchover/eGovFrameChecker/cmd"
+import (
+	"fmt"
+	"os"
+
+	"github.com/switchover/eGovFrameChecker/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Oops. An error while executing Zero '%s'\n", err)
+		os.Exit(1)
+	}
 }

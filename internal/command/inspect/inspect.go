@@ -1,0 +1,4 @@
+package inspect
+
+func Inspect() {
+}
