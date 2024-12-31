@@ -17,7 +17,7 @@ indent_style = space
 trim_trailing_whitespace = true
 
 max_line_length = 120
-insert_final_newline = false
+insert_final_newline = true
 
 # Markdown file style
 [*.md]
@@ -30,3 +30,8 @@ indent_style = tab
 # Yaml file style
 [{*.yaml,*.yml}]
 indent_size = 2
+
+# Json file style
+[*.json]
+indent_size = 2
+insert_final_newline = false

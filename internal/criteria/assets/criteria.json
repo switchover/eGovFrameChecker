@@ -1,0 +1,112 @@
+{
+  "versions": {
+    "4.3.0": {
+      "jdk": ">= 8",
+      "jdk-message": "eGovFrame v4.3은 최소 JDK 1.8 이상을 지원해야 합니다.",
+      "spring": ">= 5.3.37",
+      "spring-message": "eGovFrame v4.3은 Spring v5.3.37을 적용해야 합니다(단, 패치 버전은 상위 버전 가능).",
+      "boot": ">= 2.7.18",
+      "boot-base": "2.7.18",
+      "boot-message": "eGovFrame v4.3은 Spring Boot v2.7.18을 적용해야 합니다(단, 패치 버전은 상위 버전 가능)."
+    },
+    "4.2.0": {
+      "jdk": ">= 8",
+      "jdk-message": "eGovFrame v4.2는 최소 JDK 1.8 이상을 지원해야 합니다.",
+      "spring": ">= 5.3.27, < 5.3.37",
+      "spring-message": "eGovFrame v4.2는 Spring v5.3.27 이상 v5.3.37 미만을 적용해야 합니다.",
+      "boot": ">= 2.7.12, < 2.7.18",
+      "boot-base": "2.7.12",
+      "boot-message": "eGovFrame v4.2는 Spring Boot v2.7.12 이상 v2.7.18 미만을 적용해야 합니다."
+    },
+    "4.1.0": {
+      "jdk": ">= 8",
+      "jdk-message": "eGovFrame v4.1은 최소 JDK 1.8 이상을 지원해야 합니다.",
+      "spring": ">= 5.3.20, < 5.3.27",
+      "spring-message": "eGovFrame v4.1은 Spring v5.3.20 이상 v5.3.27 미만을 적용해야 합니다.",
+      "boot": ">= 2.7.8, < 2.7.12",
+      "boot-base": "2.7.8",
+      "boot-message": "eGovFrame v4.1은 Spring Boot v2.7.8 이상 v2.7.12 미만을 적용해야 합니다."
+    },
+    "4.0.0": {
+      "jdk": ">= 8",
+      "jdk-message": "eGovFrame v4.0은 최소 JDK 1.8 이상을 지원해야 합니다.",
+      "spring": ">= 5.3.6, < 5.3.20",
+      "spring-message": "eGovFrame v4.0은 Spring v5.3.6 이상 v5.3.20 미만을 적용해야 합니다.",
+      "boot": ">= 2.4.5, < 2.7.0",
+      "boot-base": "2.4.5",
+      "boot-message": "eGovFrame v4.0은 Spring Boot v2.4.5 이상 v2.7.0 미만을 적용해야 합니다."
+    },
+    "3.10.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.10은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.3.25, < 4.4.0",
+      "spring-message": "eGovFrame v3.10은 Spring v4.3.25 이상 v4.4.0 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.10은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.9.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.9은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.3.22, < 4.3.25",
+      "spring-message": "eGovFrame v3.9은 Spring v4.3.22 이상 v4.3.25 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.9은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.8.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.8은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.3.16, < 4.3.22",
+      "spring-message": "eGovFrame v3.8은 Spring v4.3.16 이상 v4.3.22 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.8은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.7.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.7은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.2.4, < 4.3.0",
+      "spring-message": "eGovFrame v3.7은 Spring v4.2.4 이상 v4.3.0 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.7은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.6.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.6은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.1.2, < 4.2.0",
+      "spring-message": "eGovFrame v3.6은 Spring v4.1.2 이상 v4.2.0 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.6은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.5.0": {
+      "jdk": ">= 7",
+      "jdk-message": "eGovFrame v3.5은 최소 JDK 1.7 이상을 지원해야 합니다.",
+      "spring": ">= 4.0.9, < 4.1.0",
+      "spring-message": "eGovFrame v3.5은 Spring v4.0.9 이상 v4.1.0 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.5은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.1.0": {
+      "jdk": ">= 6",
+      "jdk-message": "eGovFrame v3.1은 최소 JDK 1.6 이상을 지원해야 합니다.",
+      "spring": ">= 3.2.9, < 3.3.0",
+      "spring-message": "eGovFrame v3.1은 Spring v3.2.9 이상 v3.3.0 미만을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.1은 Spring Boot 적용을 지원하지 않습니다."
+    },
+    "3.0.0": {
+      "jdk": ">= 6",
+      "jdk-message": "eGovFrame v3.0은 최소 JDK 1.6 이상을 지원해야 합니다.",
+      "spring": "3.2.9",
+      "spring-message": "eGovFrame v3.0은 Spring v3.2.9을 적용해야 합니다.",
+      "boot": "",
+      "boot-base": "",
+      "boot-message": "eGovFrame v3.0은 Spring Boot 적용을 지원하지 않습니다."
+    }
+  }
+}
