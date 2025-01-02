@@ -1,6 +1,6 @@
 // Code generated from JavaParser.g4 by ANTLR 4.13.2. DO NOT EDIT.
 
-package parsing // JavaParser
+package parser // JavaParser
 import (
 	"fmt"
 	"strconv"

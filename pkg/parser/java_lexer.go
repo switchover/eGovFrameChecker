@@ -1,6 +1,6 @@
 // Code generated from JavaLexer.g4 by ANTLR 4.13.2. DO NOT EDIT.
 
-package parsing
+package parser
 
 import (
 	"fmt"
