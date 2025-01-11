@@ -9,11 +9,13 @@ var (
 )
 
 const (
-	LightBlue = "\033[94m"
-	Green     = "\033[92m"
-	Grey      = "\033[2m"
-	Magenta   = "\033[35m"
-	Reset     = "\033[0m"
+	LightBlue          = "\033[94m"
+	Green              = "\033[92m"
+	Grey               = "\033[2m"
+	Magenta            = "\033[35m"
+	MagentaUnderline   = "\033[35;4m"
+	MagentaNoUnderline = "\033[35;24m"
+	Reset              = "\033[0m"
 )
 
 const ResultBanner = ` ______    _______  _______  __   __  ___      _______
