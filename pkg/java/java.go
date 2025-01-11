@@ -1,8 +1,10 @@
 package java
 
 import (
+	"fmt"
 	"strings"
 
+	"github.com/switchover/eGovFrameChecker/internal/target"
 	"github.com/switchover/eGovFrameChecker/pkg/parser"
 )
 
@@ -12,11 +14,16 @@ type Listener struct {
 	*parser.BaseJavaParserListener
 	ClassName         string
 	IsInterface       bool
+	SuperClassName    string
+	HasImplementation bool
 	ClassAnnotations  []string
 	MethodAnnotations map[string]bool
 	FieldAnnotations  map[string]bool
 
 	// for private use
+	isInitialized      bool
+	importedPackages   map[string]string
+	asteriskImports    []string
 	currentClass       string
 	currentAnnotations []string
 	currentMethod      string
@@ -25,8 +32,30 @@ type Listener struct {
 }
 
 func (l *Listener) initialize() {
+	if l.isInitialized {
+		return
+	}
 	l.MethodAnnotations = make(map[string]bool)
 	l.FieldAnnotations = make(map[string]bool)
+	l.importedPackages = make(map[string]string)
+
+	l.isInitialized = true
+}
+
+func (l *Listener) EnterImportDeclaration(ctx *parser.ImportDeclarationContext) {
+	if ctx.STATIC() != nil {
+		return
+	}
+	l.initialize()
+	qualifiedName := ctx.QualifiedName().GetText()
+	if strings.HasSuffix(qualifiedName, "*") {
+		packageName := strings.TrimSuffix(qualifiedName, ".*")
+		l.asteriskImports = append(l.asteriskImports, packageName)
+		return
+	}
+	split := strings.Split(qualifiedName, ".")
+	className := split[len(split)-1]
+	l.importedPackages[className] = qualifiedName
 }
 
 func (l *Listener) EnterClassDeclaration(ctx *parser.ClassDeclarationContext) {
@@ -45,6 +74,16 @@ func (l *Listener) EnterClassDeclaration(ctx *parser.ClassDeclarationContext) {
 		}
 	}
 	l.currentClass = l.ClassName
+
+	// superClass
+	if ctx.TypeType() != nil {
+		l.SuperClassName = ctx.TypeType().GetText()
+	}
+
+	// implements
+	if len(ctx.AllTypeList()) > 0 {
+		l.HasImplementation = true
+	}
 }
 
 func (l *Listener) ExitClassDeclaration(_ *parser.ClassDeclarationContext) {
@@ -114,6 +153,19 @@ func (l *Listener) EnterAnnotation(ctx *parser.AnnotationContext) {
 	if l.currentClass != "" && l.currentMethod == "" && l.currentField == "" {
 		l.currentAnnotations = append(l.currentAnnotations, "@"+annotationName)
 	}
+}
+
+func (l *Listener) GetFqcnFromImports(className string) string {
+	if fqcn, ok := l.importedPackages[className]; ok {
+		return fqcn
+	}
+	for _, packageName := range l.asteriskImports {
+		fqcn := fmt.Sprintf("%.%", packageName, className)
+		if target.GetSourceFile(fqcn) != "" {
+			return fqcn
+		}
+	}
+	return ""
 }
 
 func addAnnotations(annotations map[string]bool, toBeAdded ...string) {

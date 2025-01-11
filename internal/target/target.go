@@ -21,6 +21,10 @@ func init() {
 	sourceFiles = make(map[fullQualifiedClassName]string)
 }
 
+func GetSourceFile(fqcn string) string {
+	return sourceFiles[fullQualifiedClassName(fqcn)]
+}
+
 func GatherSourceFiles(target string, packages []string) (totalFiles int, err error) {
 	err = filepath.Walk(target, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

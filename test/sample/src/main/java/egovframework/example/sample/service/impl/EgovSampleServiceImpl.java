@@ -17,11 +17,12 @@ package egovframework.example.sample.service.impl;
 
 import java.util.List;
 
+import egovframework.example.cmmn.EgovCommonService;
 import egovframework.example.sample.service.EgovSampleService;
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.example.sample.service.SampleVO;
 
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+//import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service("sampleService")
-public class EgovSampleServiceImpl extends EgovAbstractServiceImpl implements EgovSampleService {
+public class EgovSampleServiceImpl extends EgovCommonService implements EgovSampleService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSampleServiceImpl.class);
 

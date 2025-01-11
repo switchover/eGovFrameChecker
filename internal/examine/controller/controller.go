@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 	c "github.com/switchover/eGovFrameChecker/internal/constant"
 	"github.com/switchover/eGovFrameChecker/internal/examine/common"
+	"github.com/switchover/eGovFrameChecker/pkg/csv"
 	"github.com/switchover/eGovFrameChecker/pkg/java"
 	"github.com/switchover/eGovFrameChecker/pkg/parser"
 )
@@ -17,6 +18,16 @@ func Examine(files []string) (err error) {
 	verbose := viper.GetBool("inspect.verbose")
 	output := viper.GetBool("inspect.output")
 	skipFileError := viper.GetBool("inspect.skip")
+
+	var writer *csv.Writer
+	if output {
+		writer, err = csv.NewWriter("controllers.csv",
+			[]string{"Total list (*Controller.java)", "Use @Controller/RestController", "Use Annotation HandlerMapping"})
+		if err != nil {
+			return err
+		}
+		defer writer.Close()
+	}
 
 	total := 0
 	violations := 0
@@ -43,20 +54,40 @@ func Examine(files []string) (err error) {
 		listener := &java.Listener{}
 		antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
 
-		classResult := common.CheckClass("controller", listener)
-		methodResult := common.CheckMethods("controller", listener)
+		classResult := common.CheckClassAnnotations("controller", listener)
+		methodResult := common.CheckMethodAnnotations("controller", listener)
 
 		total++
+		target := common.FormatClassName(listener.ClassName, f)
+		record := []string{target}
+		controller := target
+		requestMapping := target
 		if !classResult && !methodResult {
 			log.Printf("%s- Controller(%s%s%s) violates the class and method rules.%s\n",
 				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
 			violations++
+			controller = ""
+			requestMapping = ""
 		} else if !classResult {
 			log.Printf("%s- Controller(%s) violates the class rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
 			violations++
+			controller = ""
 		} else if !methodResult {
 			log.Printf("%s- Controller(%s) violates the method rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
 			violations++
+			requestMapping = ""
+		}
+		record = append(record, controller, requestMapping)
+
+		if writer != nil {
+			err = writer.Write(record)
+			if err != nil {
+				if skipFileError {
+					log.Printf("Failed to write record but skipped: %v\n", err)
+					continue
+				}
+				return err
+			}
 		}
 	}
 
@@ -65,7 +96,7 @@ func Examine(files []string) (err error) {
 		if total > 1 {
 			log.Printf("%s Controllers(%d files) are OK.\n", c.IconOkay, total)
 		} else {
-			log.Printf("%s Controller(1 file) is OK.\n", c.IconNotOkay)
+			log.Printf("%s Controller(1 file) is OK.\n", c.IconOkay)
 		}
 	} else {
 		if total > 1 {
@@ -77,7 +108,7 @@ func Examine(files []string) (err error) {
 	log.Println("--------------------------------------------------------------------------------")
 
 	if output {
-		log.Println("Output to CSV file")
+		log.Println("Output file written: controllers.csv")
 	}
 	return
 }
