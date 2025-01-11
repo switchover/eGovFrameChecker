@@ -19,6 +19,7 @@ type Listener struct {
 	ClassAnnotations  []string
 	MethodAnnotations map[string]bool
 	FieldAnnotations  map[string]bool
+	FieldTypes        []string
 
 	// for private use
 	isInitialized      bool
@@ -102,6 +103,14 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 	l.initialize()
 	l.ClassName = ctx.Identifier().GetText()
 	l.IsInterface = true
+	modifiers := ctx.GetParent().GetChild(0) // 클래스 앞의 modifiers 블록
+	for _, child := range modifiers.GetChildren() {
+		if annotationCtx, ok := child.(*parser.AnnotationContext); ok {
+			if strings.HasPrefix(annotationCtx.GetText(), "@") {
+				l.ClassAnnotations = append(l.ClassAnnotations, "@"+annotationCtx.QualifiedName().GetText())
+			}
+		}
+	}
 }
 
 func (l *Listener) ExitInterfaceDeclaration(_ *parser.InterfaceDeclarationContext) {
@@ -132,6 +141,7 @@ func (l *Listener) EnterFieldDeclaration(ctx *parser.FieldDeclarationContext) {
 	if l.isInnerClass {
 		return
 	}
+	l.FieldTypes = append(l.FieldTypes, ctx.TypeType().GetText())
 	l.currentField = ctx.VariableDeclarators().GetText()
 	addAnnotations(l.FieldAnnotations, l.currentAnnotations...)
 	l.currentAnnotations = nil

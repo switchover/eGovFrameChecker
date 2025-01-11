@@ -62,7 +62,32 @@ func initConfig() {
 }
 
 func setDefaultValues() {
-	// eg: viper.SetDefault("projects.packages", "com.example")
+	viper.SetDefault("controller.fileNameGlobPattern", "*Controller")
+	viper.SetDefault("controller.classAnnotations", "@Controller,@RestController")
+	viper.SetDefault("controller.methodAnnotations", "@RequestMapping,@GetMapping,@PostMapping,@PutMapping,@DeleteMapping")
+
+	viper.SetDefault("service.fileNameGlobPattern", "*ServiceImpl")
+	viper.SetDefault("service.implementation", true)
+	viper.SetDefault("service.classAnnotations", "@Service")
+	viper.SetDefault("service.superClasses", "EgovAbstractServiceImpl")
+
+	viper.SetDefault("repository.fileNameGlobPattern", "*{DAO,Mapper}")
+
+	viper.SetDefault("repository.ibatis.classAnnotations", "@Repository")
+	viper.SetDefault("repository.ibatis.superClasses", "EgovAbstractDAO,EgovComAbstractDAO")
+
+	viper.SetDefault("repository.mybatis.classAnnotations", "@Repository")
+	viper.SetDefault("repository.mybatis.superClasses", "EgovAbstractMapper,EgovComAbstractDAO")
+
+	viper.SetDefault("repository.mapper.classAnnotations", "@Mapper")
+	viper.SetDefault("repository.mapper.interface", true)
+
+	viper.SetDefault("repository.jpa.classAnnotations", "@Repository")
+	viper.SetDefault("repository.jpa.interface", true)
+	viper.SetDefault("repository.jpa.superClasses", "JpaRepository,CrudRepository,PagingAndSortingRepository")
+
+	viper.SetDefault("repository.hibernate.classAnnotations", "@Repository")
+	viper.SetDefault("repository.hibernate.fieldTypes", "HibernateTemplate,EntityManger,EntityManagerFactory,Session,SessionFactory")
 }
 
 func getWorkingDirectory() string {

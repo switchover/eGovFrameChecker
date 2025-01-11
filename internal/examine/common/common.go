@@ -16,8 +16,8 @@ var cache = make(map[string]*java.Listener)
 
 func CheckClassAnnotations(section string, listener *java.Listener) bool {
 	annotations := viper.GetString(fmt.Sprintf("%s.%s", section, "classAnnotations"))
-	for _, annotation := range strings.Split(annotations, ",") {
-		for _, classAnnotation := range listener.ClassAnnotations {
+	for _, classAnnotation := range listener.ClassAnnotations {
+		for _, annotation := range strings.Split(annotations, ",") {
 			if classAnnotation == strings.TrimSpace(annotation) {
 				return true
 			}
@@ -49,6 +49,18 @@ func CheckImplementation(section string, listener *java.Listener) bool {
 		return listener.HasImplementation
 	}
 	return !listener.HasImplementation
+}
+
+func CheckFieldTypes(section string, listener *java.Listener) bool {
+	fieldTypes := viper.GetString(fmt.Sprintf("%s.%s", section, "fieldTypes"))
+	for _, field := range listener.FieldTypes {
+		for _, fieldType := range strings.Split(fieldTypes, ",") {
+			if field == strings.TrimSpace(fieldType) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func CheckSuperClass(section string, listener *java.Listener) bool {
