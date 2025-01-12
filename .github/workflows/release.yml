@@ -78,7 +78,7 @@ jobs:
       
     - name: Windows Build
       if: matrix.os == 'windows-latest'
-      run: .\build_with_flags.bat -o egovchecker_${{ matrix.release_suffix }}
+      run: .\build_with_flags.bat -o egovchecker_${{ matrix.release_suffix }}.exe
 
     - name: Release
       uses: softprops/action-gh-release@v2
