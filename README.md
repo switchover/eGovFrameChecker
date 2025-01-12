@@ -38,6 +38,13 @@ Use "egovchecker [command] --help" for more information about a command.
 > egovchecker.exe -h
 ```
 
+### Docker 실행
+Docker를 통해서도 다음과 같이 실행할 수 있습니다.
+```shell
+$ docker run --rm switchover/egovchecker:latest -h
+```
+
+
 ## `checklist` Command
 `checklist` 명령은 표준프레임워크 호환성 가이드에 맞는지를 제시된 체크리스트를 통해 확인할 수 있습니다.
 ```shell
@@ -101,6 +108,7 @@ Global Flags:
 | `-o`, `--output`   | 결과를 CSV 파일들로 출력합니다.      |    |
 | `-s`, `--skip`     | 파일 처리 오류를 무시하고 진행합니다.    |    |
 | `-v`, `--verbose`  | 자세한 정보를 출력합니다.           |    |
+
 참고로, `-o` 옵션을 지정하면 `controllers.csv`, `services.csv`, `repositories.csv` 3개의 csv(comma-separated values) 파일이 현 디렉토리에 저장되며,
 각 파일별 기준 충족 여부를 확인할 수 있습니다. (해당 내용은 실행 화면에도 표시됨)
 
