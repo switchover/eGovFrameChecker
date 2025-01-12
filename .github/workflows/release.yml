@@ -59,29 +59,31 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
          chmod +x ./build_with_flags.sh
-         ./build_with_flags.sh -o egovchecker
+         ./build_with_flags.sh -o egovchecker_${{ matrix.release_suffix }}
       shell: bash
 
     - name: MacOS (arm64) Build
       if: matrix.os == 'macos-latest'
       run: |
          chmod +x ./build_with_flags.sh
-         ./build_with_flags.sh -o egovchecker
+         ./build_with_flags.sh -o egovchecker_${{ matrix.release_suffix }}
       shell: bash
 
     - name: MacOS (amd64) Build
       if: matrix.os == 'macos-13'
       run: |
          chmod +x ./build_with_flags.sh
-         ./build_with_flags.sh -o egovchecker
+         ./build_with_flags.sh -o egovchecker_${{ matrix.release_suffix }}
       shell: bash
       
     - name: Windows Build
       if: matrix.os == 'windows-latest'
-      run: .\build_with_flags.bat -o egovchecker
+      run: .\build_with_flags.bat -o egovchecker_${{ matrix.release_suffix }}
 
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ needs.create_release.outputs.tag-name }}
-        files: release_${{ matrix.release_suffix }}
+        files: |
+          egovchecker_${{ matrix.release_suffix }}
+          egovchecker_${{ matrix.release_suffix }}.exe
+          
