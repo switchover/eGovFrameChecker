@@ -170,7 +170,7 @@ func (l *Listener) GetFqcnFromImports(className string) string {
 		return fqcn
 	}
 	for _, packageName := range l.asteriskImports {
-		fqcn := fmt.Sprintf("%.%", packageName, className)
+		fqcn := fmt.Sprintf("%s.%s", packageName, className)
 		if target.GetSourceFile(fqcn) != "" {
 			return fqcn
 		}
