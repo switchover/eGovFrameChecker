@@ -74,6 +74,12 @@ func Examine(files []string) (err error) {
 	}
 
 	log.Println("--------------------------------------------------------------------------------")
+	if total == 0 {
+		log.Printf("%s No repository found.\n", c.IconNotOkay)
+		log.Println("--------------------------------------------------------------------------------")
+		return
+	}
+
 	if violations == 0 {
 		if total > 1 {
 			log.Printf("%s Repositories(%d files) are OK.\n", c.IconOkay, total)
