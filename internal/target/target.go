@@ -53,7 +53,8 @@ func GatherSourceFiles(target string, packages []string) (totalFiles int, err er
 
 func checkController(path string) {
 	pattern := viper.GetString("controller.fileNameGlobPattern")
-	g := glob.MustCompile("**" + string(filepath.Separator) + pattern + ".java")
+	g := glob.MustCompile("**/" + pattern + ".java")
+	path = strings.ReplaceAll(path, "\\", "/") // Windows OS 처리
 	if g.Match(path) {
 		controllerFiles = append(controllerFiles, path)
 	}
@@ -61,7 +62,8 @@ func checkController(path string) {
 
 func checkService(path string) {
 	pattern := viper.GetString("service.fileNameGlobPattern")
-	g := glob.MustCompile("**" + string(filepath.Separator) + pattern + ".java")
+	g := glob.MustCompile("**/" + pattern + ".java")
+	path = strings.ReplaceAll(path, "\\", "/") // Windows OS 처리
 	if g.Match(path) {
 		serviceFiles = append(serviceFiles, path)
 	}
@@ -69,7 +71,8 @@ func checkService(path string) {
 
 func checkRepository(path string) {
 	pattern := viper.GetString("repository.fileNameGlobPattern")
-	g := glob.MustCompile("**" + string(filepath.Separator) + pattern + ".java")
+	g := glob.MustCompile("**/" + pattern + ".java")
+	path = strings.ReplaceAll(path, "\\", "/") // Windows OS 처리
 	if g.Match(path) {
 		repositoryFiles = append(repositoryFiles, path)
 	}
@@ -88,6 +91,11 @@ func GetRepositoryFiles() []string {
 }
 
 func convertFilePathToPackageStyle(filePath string) string {
+	// Remove target directory
+	target := viper.GetString("inspect.target") + string(filepath.Separator)
+	if strings.HasPrefix(filePath, target) {
+		filePath = filePath[len(target):]
+	}
 	// Remove file extension
 	filePath = strings.TrimSuffix(filePath, filepath.Ext(filePath))
 	// Replace file separators with dots

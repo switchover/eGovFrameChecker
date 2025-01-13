@@ -70,11 +70,13 @@ func Examine(files []string) (err error) {
 			service = ""
 			implement = ""
 		} else if !(classResult && extendsResult) {
-			log.Printf("%s- Service(%s) violates the class rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
+			log.Printf("%s- Service(%s%s%s) violates the class rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
 			violations++
 			service = ""
 		} else if !implementsResult {
-			log.Printf("%s- Service(%s) violates the interface rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
+			log.Printf("%s- Service(%s%s%s) violates the interface rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
 			violations++
 			implement = ""
 		}
@@ -93,6 +95,12 @@ func Examine(files []string) (err error) {
 	}
 
 	log.Println("--------------------------------------------------------------------------------")
+	if total == 0 {
+		log.Printf("%s No service found.\n", c.IconNotOkay)
+		log.Println("--------------------------------------------------------------------------------")
+		return
+	}
+
 	if violations == 0 {
 		if total > 1 {
 			log.Printf("%s Services(%d files) are OK.\n", c.IconOkay, total)

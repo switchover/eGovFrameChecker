@@ -121,6 +121,10 @@ func recursiveSuperClassCheck(superClasses string, currentListener *java.Listene
 	return recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
 }
 
-func FormatClassName(className string, filepath string) string {
-	return fmt.Sprintf("%s.java - %s", className, filepath)
+func FormatClassName(className string, filePath string) string {
+	target := strings.ReplaceAll(viper.GetString("inspect.target"), "\\", "/") + "/" // Windows OS 처리
+	if strings.HasPrefix(filePath, target) {
+		filePath = filePath[len(target):]
+	}
+	return fmt.Sprintf("%s.java - %s", className, filePath)
 }

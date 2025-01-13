@@ -69,11 +69,13 @@ func Examine(files []string) (err error) {
 			controller = ""
 			requestMapping = ""
 		} else if !classResult {
-			log.Printf("%s- Controller(%s) violates the class rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
+			log.Printf("%s- Controller(%s%s%s) violates the class rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
 			violations++
 			controller = ""
 		} else if !methodResult {
-			log.Printf("%s- Controller(%s) violates the method rule.%s\n", c.Magenta, listener.ClassName, c.Reset)
+			log.Printf("%s- Controller(%s%s%s) violates the method rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
 			violations++
 			requestMapping = ""
 		}
@@ -92,6 +94,12 @@ func Examine(files []string) (err error) {
 	}
 
 	log.Println("--------------------------------------------------------------------------------")
+	if total == 0 {
+		log.Printf("%s No controller found.\n", c.IconNotOkay)
+		log.Println("--------------------------------------------------------------------------------")
+		return
+	}
+
 	if violations == 0 {
 		if total > 1 {
 			log.Printf("%s Controllers(%d files) are OK.\n", c.IconOkay, total)
