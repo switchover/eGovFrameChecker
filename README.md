@@ -43,7 +43,7 @@ Docker를 통해서도 다음과 같이 실행할 수 있습니다.
 ```shell
 $ docker run --rm switchover/egovchecker:latest -h
 ```
-
+Docker를 통한 다른 명령 실행은 [Docker Hub](https://hub.docker.com/r/switchover/egovchecker) 페이지를 참고하세요.
 
 ## `checklist` Command
 `checklist` 명령은 표준프레임워크 호환성 가이드에 맞는지를 제시된 체크리스트를 통해 확인할 수 있습니다.
@@ -212,6 +212,28 @@ $ ./egovchecker defaultconfig
 
 이제 `config.ini` 파일을 수정한 후 `inspect` 명령을 실행하면 변경된 규칙이 적용됩니다.
 (`config.ini` 파일은 프로그램 실행 시 현재 디렉토리 또는 홈 디렉토리에서 찾음)
+
+
+## Build
+### Go Build
+다음과 같이 빌드 스크립트를 통해 븰드를 수행할 수 있습니다.
+```shell
+$ ./build_with_flags.sh -o egovchecker
+```
+Windows 환경에서는 `build_with_flags.bat` 파일을 사용하며, 
+스크립트 내부적으로 Go 언어 버전, 빌드 시간 및 commit 정보를 buildflag로 추가합니다.
+
+### Docker Build
+Docker image는 다음과 같이 빌드 및 배포할 수 있습니다.
+```shell
+$ docker build -t switchover/egovchecker .
+$ docker tag switchover/egovchecker switchover/egovchecker:[version]
+$ docker login
+$ docker push switchover/egovchecker
+$ docker push switchover/egovchecker:[version]
+```
+- tag 부분이 지정되지 않으면 `latest`가 자동 지정됨
+- `[version]`은 버전 정보로 `0.1` 등과 같이 버전 정보를 지정합니다.
 
 
 ## Reference

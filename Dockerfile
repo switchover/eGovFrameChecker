@@ -25,11 +25,12 @@ FROM alpine:latest
 # Timezone
 ENV TZ=Asia/Seoul
 
-# Set the working directory
-WORKDIR /root/
+# Set the working directory.
+# - The directory to be inspected must be mounted on the host via volume.
+WORKDIR /target
 
 # Copy the binary from the builder stage
-COPY --from=builder /app/egovchecker .
+COPY --from=builder /app/egovchecker /app/egovchecker
 
 # Run the binary
-ENTRYPOINT ["./egovchecker"]
+ENTRYPOINT ["/app/egovchecker"]
