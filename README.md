@@ -77,8 +77,7 @@ eGovFrame Compatibility: Compatible (level: 2)
 ------------------------------------------------------------
 ```
 
-참고로 표준프레임워크 버전에 따른 기준은 [criteria.json](./internal/criteria/assets
-/criteria.json)에서 확인할 수 있습니다.
+참고로 표준프레임워크 버전에 따른 기준은 [criteria.json](./internal/criteria/assets/criteria.json)에서 확인할 수 있습니다.
 
 
 ## `inspect` Command
