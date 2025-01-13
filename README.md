@@ -77,6 +77,10 @@ eGovFrame Compatibility: Compatible (level: 2)
 ------------------------------------------------------------
 ```
 
+참고로 표준프레임워크 버전에 따른 기준은 [criteria.json](./internal/criteria/assets
+/criteria.json)에서 확인할 수 있습니다.
+
+
 ## `inspect` Command
 `inspect` 명령은 전체 소스를 대상으로 각 레이어(`Controller`, `Service`, `Repository`) 기준을 확인할 수 있습니다.
 
@@ -130,6 +134,7 @@ $ ./egovchecker inspect -t ./test/sample -p egovframework -o
 2025/01/12 17:54:42 --------------------------------------------------------------------------------
 2025/01/12 17:54:42 Output file written: repositories.csv
 ```
+
 
 ## Customizing `inspect` Command 
 `inspect` 명령은 내부적으로 다음과 같은 점검 규칙을 사용하며, 별도로 규칙을 수정해 적용할 수 있습니다.
