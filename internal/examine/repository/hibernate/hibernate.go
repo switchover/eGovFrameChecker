@@ -5,7 +5,7 @@ import (
 	"github.com/switchover/eGovFrameChecker/pkg/java"
 )
 
-func Examine(listener *java.Listener) (result bool, err error) {
+func Examine(listener *java.Listener) (result bool) {
 	result = common.CheckClassAnnotations("repository.hibernate", listener)
 	if !result {
 		return

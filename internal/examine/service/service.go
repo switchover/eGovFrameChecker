@@ -22,7 +22,7 @@ func Examine(files []string) (err error) {
 	var writer *csv.Writer
 	if output {
 		writer, err = csv.NewWriter("services.csv",
-			[]string{"Total list (*ServiceImpl.java)", "Extends EgovAbstractServiceImpl", "Use Interface"})
+			[]string{"Total list (*ServiceImpl.java)", "Extends EgovAbstractServiceImpl", "Use Interface", "Super Class"})
 		if err != nil {
 			return err
 		}
@@ -55,7 +55,7 @@ func Examine(files []string) (err error) {
 		antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
 
 		classResult := common.CheckClassAnnotations("service", listener)
-		extendsResult := common.CheckSuperClass("service", listener)
+		extendsResult, superClass := common.CheckSuperClass("service", listener)
 		implementsResult := common.CheckImplementation("service", listener)
 
 		total++
@@ -80,7 +80,7 @@ func Examine(files []string) (err error) {
 			violations++
 			implement = ""
 		}
-		record = append(record, service, implement)
+		record = append(record, service, implement, superClass)
 
 		if writer != nil {
 			err = writer.Write(record)

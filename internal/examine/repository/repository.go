@@ -26,7 +26,7 @@ func Examine(files []string) (err error) {
 	var writer *csv.Writer
 	if output {
 		writer, err = csv.NewWriter("repositories.csv",
-			[]string{"Total list (*DAO.java or *Mapper.java)", "Extends EgovAbstract* or Use @Mapper"})
+			[]string{"Total list (*DAO.java or *Mapper.java)", "Extends EgovAbstract* or Use @Mapper", "Super Class"})
 		if err != nil {
 			return err
 		}
@@ -40,7 +40,8 @@ func Examine(files []string) (err error) {
 			log.Printf("%d: %s", i+1, f)
 		}
 
-		result, listener, err := check(f)
+		superClassName := ""
+		result, listener, superClassName, err := check(f)
 		if err != nil {
 			if skipFileError {
 				log.Printf("Failed to examine file but skipped: %v\n", err)
@@ -59,7 +60,7 @@ func Examine(files []string) (err error) {
 			violations++
 			criteria = ""
 		}
-		record = append(record, criteria)
+		record = append(record, criteria, superClassName)
 
 		if writer != nil {
 			err = writer.Write(record)
@@ -101,7 +102,7 @@ func Examine(files []string) (err error) {
 	return
 }
 
-func check(f string) (result bool, listener *java.Listener, err error) {
+func check(f string) (result bool, listener *java.Listener, superClassName string, err error) {
 	data, err := os.ReadFile(f)
 	if err != nil {
 		return
@@ -116,26 +117,28 @@ func check(f string) (result bool, listener *java.Listener, err error) {
 	listener = &java.Listener{}
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
 
-	result, err = ibatis.Examine(listener)
-	if result || err != nil {
+	result, superClassName = ibatis.Examine(listener)
+	if result {
 		return
 	}
 
-	result, err = mybatis.Examine(listener)
-	if result || err != nil {
+	result, superClassName = mybatis.Examine(listener)
+	if result {
 		return
 	}
 
-	result, err = mapper.Examine(listener)
-	if result || err != nil {
+	result = mapper.Examine(listener)
+	if result {
+		superClassName = "<@Mapper>"
 		return
 	}
 
-	result, err = jpa.Examine(listener)
-	if result || err != nil {
+	result = jpa.Examine(listener)
+	if result {
+		superClassName = "<JPA>"
 		return
 	}
 
-	result, err = hibernate.Examine(listener)
+	result = hibernate.Examine(listener)
 	return
 }
