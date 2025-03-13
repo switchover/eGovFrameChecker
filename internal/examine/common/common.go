@@ -63,24 +63,24 @@ func CheckFieldTypes(section string, listener *java.Listener) bool {
 	return false
 }
 
-func CheckSuperClass(section string, listener *java.Listener) bool {
+func CheckSuperClass(section string, listener *java.Listener) (bool, string) {
 	if listener.SuperClassName == "" {
-		return false
+		return false, ""
 	}
 	superClasses := viper.GetString(fmt.Sprintf("%s.%s", section, "superClasses"))
 	for _, superClass := range strings.Split(superClasses, ",") {
 		if listener.SuperClassName == strings.TrimSpace(superClass) {
-			return true
+			return true, listener.SuperClassName
 		}
 	}
 	// recursive check
 	return recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
 }
 
-func recursiveSuperClassCheck(superClasses string, currentListener *java.Listener, currentClassName string) bool {
+func recursiveSuperClassCheck(superClasses string, currentListener *java.Listener, currentClassName string) (bool, string) {
 	fqcn := currentListener.GetFqcnFromImports(currentClassName)
 	if fqcn == "" {
-		return false
+		return false, ""
 	}
 
 	// get super class's listener
@@ -88,12 +88,12 @@ func recursiveSuperClassCheck(superClasses string, currentListener *java.Listene
 	if cache[fqcn] == nil {
 		f := target.GetSourceFile(fqcn)
 		if f == "" {
-			return false
+			return false, ""
 		}
 		data, err := os.ReadFile(f)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "Failed to read file: %v\n", err)
-			return false
+			return false, ""
 		}
 
 		input := antlr.NewInputStream(string(data))
@@ -113,7 +113,7 @@ func recursiveSuperClassCheck(superClasses string, currentListener *java.Listene
 	// check expected super classes
 	for _, superClass := range strings.Split(superClasses, ",") {
 		if listener.SuperClassName == strings.TrimSpace(superClass) {
-			return true
+			return true, listener.SuperClassName
 		}
 	}
 
