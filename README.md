@@ -229,8 +229,8 @@ Docker image는 다음과 같이 빌드 및 배포할 수 있습니다.
 $ docker build -t switchover/egovchecker .
 $ docker tag switchover/egovchecker switchover/egovchecker:[version]
 $ docker login
-$ docker push switchover/egovchecker
 $ docker push switchover/egovchecker:[version]
+$ docker push switchover/egovchecker
 ```
 - tag 부분이 지정되지 않으면 `latest`가 자동 지정됨
 - `[version]`은 버전 정보로 `0.1` 등과 같이 버전 정보를 지정합니다.
