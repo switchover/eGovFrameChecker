@@ -8,7 +8,9 @@ import "fmt"
 //   - 상위 클래스 정보 기록 추가
 //   - 불필요 error 반환 제거
 //   - Repository 처리 상 오류 수정
-const CheckerVersion = "v0.2.0"
+//
+// v0.2.1 : ANTLR4 처리 오류 수정
+const CheckerVersion = "v0.2.1"
 
 // build flags
 var (

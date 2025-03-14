@@ -74,7 +74,9 @@ func CheckSuperClass(section string, listener *java.Listener) (bool, string) {
 		}
 	}
 	// recursive check
-	return recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
+	check, _ := recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
+	// return current super class name
+	return check, listener.SuperClassName
 }
 
 func recursiveSuperClassCheck(superClasses string, currentListener *java.Listener, currentClassName string) (bool, string) {
