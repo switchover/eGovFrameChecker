@@ -33,5 +33,5 @@ jobs:
 
       - name: Docker push
         run: |
-          docker push switchover/egovchecker:$TAG
+          docker push switchover/egovchecker:${{ steps.tag.outputs.tag }}
           docker push switchover/egovchecker
