@@ -66,11 +66,12 @@ func (l *Listener) EnterClassDeclaration(ctx *parser.ClassDeclarationContext) {
 	}
 	l.initialize()
 	l.ClassName = ctx.Identifier().GetText()
-	modifiers := ctx.GetParent().GetChild(0) // 클래스 앞의 modifiers 블록
-	for _, child := range modifiers.GetChildren() {
-		if annotationCtx, ok := child.(*parser.AnnotationContext); ok {
-			if strings.HasPrefix(annotationCtx.GetText(), "@") {
-				l.ClassAnnotations = append(l.ClassAnnotations, "@"+annotationCtx.QualifiedName().GetText())
+	for _, modifiers := range ctx.GetParent().GetChildren() {
+		for _, child := range modifiers.GetChildren() {
+			if annotationCtx, ok := child.(*parser.AnnotationContext); ok {
+				if strings.HasPrefix(annotationCtx.GetText(), "@") {
+					l.ClassAnnotations = append(l.ClassAnnotations, "@"+annotationCtx.QualifiedName().GetText())
+				}
 			}
 		}
 	}
