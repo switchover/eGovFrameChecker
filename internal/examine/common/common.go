@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
@@ -13,6 +14,8 @@ import (
 )
 
 var cache = make(map[string]*java.Listener)
+
+var toBeCheckedSuperClasses = make([]string, 0)
 
 func CheckClassAnnotations(section string, listener *java.Listener) bool {
 	annotations := viper.GetString(fmt.Sprintf("%s.%s", section, "classAnnotations"))
@@ -30,7 +33,7 @@ func CheckClassAnnotations(section string, listener *java.Listener) bool {
 func CheckMethodAnnotations(section string, listener *java.Listener) bool {
 	annotations := viper.GetString(fmt.Sprintf("%s.%s", section, "methodAnnotations"))
 	for _, annotation := range strings.Split(annotations, ",") {
-		if listener.MethodAnnotations[strings.TrimSpace(annotation)] == true {
+		if listener.MethodAnnotations[strings.TrimSpace(annotation)] {
 			return true
 		}
 	}
@@ -75,6 +78,9 @@ func CheckSuperClass(section string, listener *java.Listener) (bool, string) {
 	}
 	// recursive check
 	check, _ := recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
+	if check && !slices.Contains(toBeCheckedSuperClasses, listener.SuperClassName) {
+		toBeCheckedSuperClasses = append(toBeCheckedSuperClasses, listener.SuperClassName)
+	}
 	// return current super class name
 	return check, listener.SuperClassName
 }
@@ -123,10 +129,12 @@ func recursiveSuperClassCheck(superClasses string, currentListener *java.Listene
 	return recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
 }
 
+func GetToBeCheckedSuperClasses() []string {
+	return toBeCheckedSuperClasses
+}
+
 func FormatClassName(className string, filePath string) string {
 	target := strings.ReplaceAll(viper.GetString("inspect.target"), "\\", "/") + "/" // Windows OS 처리
-	if strings.HasPrefix(filePath, target) {
-		filePath = filePath[len(target):]
-	}
+	filePath = strings.TrimPrefix(filePath, target)
 	return fmt.Sprintf("%s.java - %s", className, filePath)
 }
