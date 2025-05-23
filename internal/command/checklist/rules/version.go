@@ -55,7 +55,7 @@ func InputVersionRule() {
 func eGovFrameVersion() (ok bool, semVer *semver.Version) {
 	prompt := promptui.Select{
 		Label:     "eGovFrame version used",
-		CursorPos: 1,
+		CursorPos: 0,
 		Items: []string{
 			"v4.3", "v4.2", "v4.1", "v4.0", "v3.10", "v3.9", "v3.8", "v3.7", "v3.6", "v3.5", "v3.1", "v3.0"},
 	}

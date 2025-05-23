@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+	c "github.com/switchover/eGovFrameChecker/internal/constant"
+	"github.com/switchover/eGovFrameChecker/internal/examine/common"
 	"github.com/switchover/eGovFrameChecker/internal/examine/controller"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository"
 	"github.com/switchover/eGovFrameChecker/internal/examine/service"
@@ -34,5 +36,12 @@ func Inspect() {
 	err = repository.Examine(target.GetRepositoryFiles())
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	toBeCheckedSuperClasses := common.GetToBeCheckedSuperClasses()
+	if len(toBeCheckedSuperClasses) > 1 {
+		log.Printf("%s%s Super classes to be checked: %v\n", c.IconCaution, c.Reset, toBeCheckedSuperClasses)
+	} else if len(toBeCheckedSuperClasses) == 1 {
+		log.Printf("%s%s Super class to be checked: %v\n", c.IconCaution, c.Reset, toBeCheckedSuperClasses[0])
 	}
 }

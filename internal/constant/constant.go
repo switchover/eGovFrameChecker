@@ -6,6 +6,7 @@ var (
 	IconOkay    = promptui.Styler(promptui.FGBlue)("✔")
 	IconNotOkay = promptui.Styler(promptui.FGRed)("✘")
 	IconWarn    = promptui.Styler(promptui.FGBold, promptui.FGYellow)("-")
+	IconCaution = promptui.Styler(promptui.FGBold, promptui.FGYellow)("*")
 )
 
 const (
