@@ -58,6 +58,12 @@ func Examine(files []string) (err error) {
 		extendsResult, superClass := common.CheckSuperClass("service", listener)
 		implementsResult := common.CheckImplementation("service", listener)
 
+		if listener.IsInterface {
+			log.Printf("%s- Service(%s) excluded because it's an interface.%s\n",
+				c.Yellow, listener.ClassName, c.Reset)
+			continue
+		}
+
 		total++
 		target := common.FormatClassName(listener.ClassName, f)
 		record := []string{target}

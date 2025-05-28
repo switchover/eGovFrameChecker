@@ -50,6 +50,12 @@ func Examine(files []string) (err error) {
 			return err
 		}
 
+		if !result && listener.IsInterface {
+			log.Printf("%s- Repository(%s) excluded because it's a simple interface.%s\n",
+				c.Yellow, listener.ClassName, c.Reset)
+			continue
+		}
+
 		total++
 		target := common.FormatClassName(listener.ClassName, f)
 		record := []string{target}

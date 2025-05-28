@@ -13,6 +13,7 @@ const (
 	LightBlue          = "\033[94m"
 	Green              = "\033[92m"
 	Grey               = "\033[2m"
+	Yellow             = "\033[0;33m"
 	Magenta            = "\033[35m"
 	MagentaUnderline   = "\033[35;4m"
 	MagentaNoUnderline = "\033[35;24m"
