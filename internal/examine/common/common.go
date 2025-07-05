@@ -54,13 +54,23 @@ func CheckImplementation(section string, listener *java.Listener) bool {
 	return !listener.HasImplementation
 }
 
-func CheckFieldTypes(section string, listener *java.Listener) bool {
+func CheckFieldTypes(section string, listener *java.Listener, checkSuperClass bool) bool {
 	fieldTypes := viper.GetString(fmt.Sprintf("%s.%s", section, "fieldTypes"))
 	for _, field := range listener.FieldTypes {
 		for _, fieldType := range strings.Split(fieldTypes, ",") {
 			if field == strings.TrimSpace(fieldType) {
 				return true
 			}
+		}
+	}
+	// recursive check
+	if checkSuperClass {
+		if listener.SuperClassName != "" {
+			check, _ := recursiveFieldTypesCheck(fieldTypes, listener, listener.SuperClassName)
+			if check && !slices.Contains(toBeCheckedSuperClasses, listener.SuperClassName) {
+				toBeCheckedSuperClasses = append(toBeCheckedSuperClasses, listener.SuperClassName)
+			}
+			return check
 		}
 	}
 	return false
@@ -81,52 +91,44 @@ func CheckSuperClass(section string, listener *java.Listener) (bool, string) {
 	if check && !slices.Contains(toBeCheckedSuperClasses, listener.SuperClassName) {
 		toBeCheckedSuperClasses = append(toBeCheckedSuperClasses, listener.SuperClassName)
 	}
-	// return current super class name
+	// return current super class name not recursive super class name
 	return check, listener.SuperClassName
 }
 
-func recursiveSuperClassCheck(superClasses string, currentListener *java.Listener, currentClassName string) (bool, string) {
-	fqcn := currentListener.GetFqcnFromImports(currentClassName)
-	if fqcn == "" {
+func recursiveFieldTypesCheck(expectedFieldTypes string, currentListener *java.Listener, superClassName string) (bool, string) {
+	listener, err := getListenerOfSuperClass(superClassName, currentListener)
+	if err != nil {
 		return false, ""
 	}
 
-	// get super class's listener
-	var listener *java.Listener
-	if cache[fqcn] == nil {
-		f := target.GetSourceFile(fqcn)
-		if f == "" {
-			return false, ""
+	// check an expected field type
+	for _, field := range listener.FieldTypes {
+		for _, fieldType := range strings.Split(expectedFieldTypes, ",") {
+			if field == strings.TrimSpace(fieldType) {
+				return true, field
+			}
 		}
-		data, err := os.ReadFile(f)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Failed to read file: %v\n", err)
-			return false, ""
-		}
+	}
 
-		input := antlr.NewInputStream(string(data))
+	// recursive function call
+	return recursiveFieldTypesCheck(expectedFieldTypes, listener, listener.SuperClassName)
+}
 
-		lexer := parser.NewJavaLexer(input)
-		stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-		p := parser.NewJavaParser(stream)
-
-		listener = &java.Listener{}
-		antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
-
-		cache[fqcn] = listener
-	} else {
-		listener = cache[fqcn]
+func recursiveSuperClassCheck(expectedSuperClasses string, currentListener *java.Listener, superClassName string) (bool, string) {
+	listener, err := getListenerOfSuperClass(superClassName, currentListener)
+	if err != nil {
+		return false, ""
 	}
 
 	// check expected super classes
-	for _, superClass := range strings.Split(superClasses, ",") {
+	for _, superClass := range strings.Split(expectedSuperClasses, ",") {
 		if listener.SuperClassName == strings.TrimSpace(superClass) {
 			return true, listener.SuperClassName
 		}
 	}
 
 	// recursive function call
-	return recursiveSuperClassCheck(superClasses, listener, listener.SuperClassName)
+	return recursiveSuperClassCheck(expectedSuperClasses, listener, listener.SuperClassName)
 }
 
 func GetToBeCheckedSuperClasses() []string {
@@ -137,4 +139,38 @@ func FormatClassName(className string, filePath string) string {
 	target := strings.ReplaceAll(viper.GetString("inspect.target"), "\\", "/") + "/" // Windows OS 처리
 	filePath = strings.TrimPrefix(filePath, target)
 	return fmt.Sprintf("%s.java - %s", className, filePath)
+}
+
+func getListenerOfSuperClass(superClassName string, currentListener *java.Listener) (*java.Listener, error) {
+	if superClassName == "" {
+		return nil, fmt.Errorf("super class name is empty")
+	}
+	fqcn := currentListener.GetFqcnFromImports(superClassName)
+	if fqcn == "" {
+		return nil, fmt.Errorf("could not find FQCN for class: %s", superClassName)
+	}
+
+	if cache[fqcn] == nil {
+		f := target.GetSourceFile(fqcn)
+		if f == "" {
+			return nil, fmt.Errorf("source file not found for FQCN: %s", fqcn)
+		}
+		data, err := os.ReadFile(f)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read file: %v", err)
+		}
+
+		input := antlr.NewInputStream(string(data))
+
+		lexer := parser.NewJavaLexer(input)
+		stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+		p := parser.NewJavaParser(stream)
+
+		listener := &java.Listener{}
+		antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
+
+		cache[fqcn] = listener
+	}
+
+	return cache[fqcn], nil
 }

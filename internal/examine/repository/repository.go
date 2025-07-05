@@ -146,5 +146,9 @@ func check(f string) (result bool, listener *java.Listener, superClassName strin
 	}
 
 	result = hibernate.Examine(listener)
+	if result {
+		superClassName = "<Hibernate>"
+		return
+	}
 	return
 }
