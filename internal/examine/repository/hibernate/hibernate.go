@@ -11,6 +11,6 @@ func Examine(listener *java.Listener) (result bool) {
 		return
 	}
 
-	result = common.CheckFieldTypes("repository.hibernate", listener)
+	result = common.CheckFieldTypes("repository.hibernate", listener, true)
 	return
 }
