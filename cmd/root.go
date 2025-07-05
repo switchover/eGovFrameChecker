@@ -71,7 +71,7 @@ func setDefaultValues() {
 	viper.SetDefault("service.classAnnotations", "@Service")
 	viper.SetDefault("service.superClasses", "EgovAbstractServiceImpl")
 
-	viper.SetDefault("repository.fileNameGlobPattern", "*{DAO,Mapper}")
+	viper.SetDefault("repository.fileNameGlobPattern", "*{DAO,Mapper,Repository}")
 
 	viper.SetDefault("repository.ibatis.classAnnotations", "@Repository")
 	viper.SetDefault("repository.ibatis.superClasses", "EgovAbstractDAO,EgovComAbstractDAO")
