@@ -18,8 +18,15 @@ func NewWriter(file string, header []string) (*Writer, error) {
 		return nil, err
 	}
 	writer := csv.NewWriter(f)
-	err = writer.Write(header)
-	if err != nil {
+	if err = writer.Write(header); err != nil {
+		// ensure resources are released on failure
+		writer.Flush()
+		_ = f.Close()
+		return nil, err
+	}
+	writer.Flush()
+	if err = writer.Error(); err != nil {
+		_ = f.Close()
 		return nil, err
 	}
 	return &Writer{header: header, autoFlush: false, file: f, writer: writer}, nil
