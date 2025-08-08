@@ -216,7 +216,7 @@ $ ./egovchecker defaultconfig
 
 ## Build
 ### Go Build
-다음과 같이 빌드 스크립트를 통해 븰드를 수행할 수 있습니다.
+다음과 같이 빌드 스크립트를 통해 빌드를 수행할 수 있습니다.
 ```shell
 $ ./build_with_flags.sh -o egovchecker
 ```
