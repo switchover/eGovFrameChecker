@@ -87,7 +87,7 @@ func setDefaultValues() {
 	viper.SetDefault("repository.jpa.superClasses", "JpaRepository,CrudRepository,PagingAndSortingRepository")
 
 	viper.SetDefault("repository.hibernate.classAnnotations", "@Repository")
-	viper.SetDefault("repository.hibernate.fieldTypes", "HibernateTemplate,EntityManger,EntityManagerFactory,Session,SessionFactory")
+        viper.SetDefault("repository.hibernate.fieldTypes", "HibernateTemplate,EntityManager,EntityManagerFactory,Session,SessionFactory")
 }
 
 func getWorkingDirectory() string {
