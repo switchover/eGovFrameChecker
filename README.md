@@ -154,7 +154,7 @@ classAnnotations = @Service
 superClasses = EgovAbstractServiceImpl
 
 [repository]
-fileNameGlobPattern = *{DAO,Mapper}
+fileNameGlobPattern = *{DAO,Mapper,Repository}
 
 [repository.ibatis]
 classAnnotations = @Repository
@@ -175,7 +175,7 @@ superClasses = JpaRepository,CrudRepository,PagingAndSortingRepository
 
 [repository.hibernate]
 classAnnotations = @Repository
-fieldTypes = HibernateTemplate,EntityManger,EntityManagerFactory,Session,SessionFactory
+fieldTypes = HibernateTemplate,EntityManager,EntityManagerFactory,Session,SessionFactory
 ```
 Ini 파일 설정은 3개의 세션(`controller`, `service`, `repository`)과 
 `repository` 세션 밑에 5개의 하위 세션(`repository.ibatis`, `repository.mybatis`, `repository.mapper`, `repository.jpa`, `repository.hibernate`)로 구성되어 있습니다.
@@ -216,7 +216,7 @@ $ ./egovchecker defaultconfig
 
 ## Build
 ### Go Build
-다음과 같이 빌드 스크립트를 통해 븰드를 수행할 수 있습니다.
+다음과 같이 빌드 스크립트를 통해 빌드를 수행할 수 있습니다.
 ```shell
 $ ./build_with_flags.sh -o egovchecker
 ```
