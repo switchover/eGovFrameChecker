@@ -138,7 +138,7 @@ func inputServiceLayer() {
 		log.Fatalf("Prompt failed %v\n", err)
 	}
 	if yesOrNo == "No" {
-		result.CheckResult.PresentationLayerRule = false
+		result.CheckResult.ServiceLayerRule = false
 	}
 }
 
