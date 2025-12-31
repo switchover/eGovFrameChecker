@@ -31,6 +31,7 @@ func Examine(files []string) (err error) {
 
 	total := 0
 	violations := 0
+	logList := make([]string, 0, 10)
 	for i, f := range files {
 		if verbose {
 			log.Printf("%d: %s", i+1, f)
@@ -59,8 +60,8 @@ func Examine(files []string) (err error) {
 		implementsResult := common.CheckImplementation("service", listener)
 
 		if listener.IsInterface {
-			log.Printf("%s- Service(%s) excluded because it's an interface.%s\n",
-				c.Yellow, listener.ClassName, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Service(%s) excluded because it's an interface.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
 			continue
 		}
 
@@ -70,19 +71,19 @@ func Examine(files []string) (err error) {
 		service := target
 		implement := target
 		if !(classResult && extendsResult) && !implementsResult {
-			log.Printf("%s- Service(%s%s%s) violates the class and interface rules.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Service(%s%s%s) violates the class and interface rules.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			service = ""
 			implement = ""
 		} else if !(classResult && extendsResult) {
-			log.Printf("%s- Service(%s%s%s) violates the class rule.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Service(%s%s%s) violates the class rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			service = ""
 		} else if !implementsResult {
-			log.Printf("%s- Service(%s%s%s) violates the interface rule.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Service(%s%s%s) violates the interface rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			implement = ""
 		}
@@ -119,6 +120,9 @@ func Examine(files []string) (err error) {
 		} else {
 			log.Printf("%s Service(1 file) has %d violation.\n", c.IconNotOkay, violations)
 		}
+	}
+	for _, message := range logList {
+		log.Printf("%s", message)
 	}
 	log.Println("--------------------------------------------------------------------------------")
 
