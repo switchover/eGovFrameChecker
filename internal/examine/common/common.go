@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"slices"
 	"strings"
@@ -17,17 +18,17 @@ var cache = make(map[string]*java.Listener)
 
 var toBeCheckedSuperClasses = make([]string, 0)
 
-func CheckClassAnnotations(section string, listener *java.Listener) bool {
+func CheckClassAnnotations(section string, listener *java.Listener) (bool, string) {
 	annotations := viper.GetString(fmt.Sprintf("%s.%s", section, "classAnnotations"))
 	for _, classAnnotation := range listener.ClassAnnotations {
 		for _, annotation := range strings.Split(annotations, ",") {
 			if classAnnotation == strings.TrimSpace(annotation) {
-				return true
+				return true, classAnnotation
 			}
 		}
 	}
 
-	return false
+	return false, ""
 }
 
 func CheckMethodAnnotations(section string, listener *java.Listener) bool {
@@ -39,6 +40,26 @@ func CheckMethodAnnotations(section string, listener *java.Listener) bool {
 	}
 
 	return false
+}
+
+func CheckConditionalImports(section string, className string, listener *java.Listener) bool {
+	conditionalImports := viper.GetString(fmt.Sprintf("%s.%s", section, "conditionalImports"))
+	for _, conditionalImport := range strings.Split(conditionalImports, ",") {
+		importPart := strings.Split(conditionalImport, ":")
+		if len(importPart) != 2 {
+			log.Printf("Conditional import format error: %s\n", conditionalImports)
+			continue
+		}
+
+		if importPart[0] == className {
+			if listener.GetFqcnFromImports(className) != importPart[1] {
+				return false
+			}
+		}
+	}
+
+	// because it's conditional check!
+	return true
 }
 
 func CheckInterface(section string, listener *java.Listener) bool {

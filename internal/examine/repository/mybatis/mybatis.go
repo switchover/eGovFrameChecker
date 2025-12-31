@@ -6,7 +6,7 @@ import (
 )
 
 func Examine(listener *java.Listener) (result bool, superClassName string) {
-	result = common.CheckClassAnnotations("repository.mybatis", listener)
+	result, _ = common.CheckClassAnnotations("repository.mybatis", listener)
 	if !result {
 		return
 	}

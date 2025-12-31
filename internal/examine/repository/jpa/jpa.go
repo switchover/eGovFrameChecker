@@ -6,7 +6,7 @@ import (
 )
 
 func Examine(listener *java.Listener) (result bool) {
-	result = common.CheckClassAnnotations("repository.jpa", listener)
+	result, _ = common.CheckClassAnnotations("repository.jpa", listener)
 	if !result {
 		return
 	}
