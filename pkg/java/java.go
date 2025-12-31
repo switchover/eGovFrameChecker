@@ -117,7 +117,15 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 	// extends
 	for _, typeType := range ctx.AllTypeList() {
 		for _, extendType := range typeType.AllTypeType() {
-			l.ExtendsInterfaces = append(l.ExtendsInterfaces, extendType.ClassOrInterfaceType().TypeIdentifier().GetText())
+			classOrInterfaceType := extendType.ClassOrInterfaceType()
+			if classOrInterfaceType == nil {
+				continue
+			}
+			typeIdentifier := classOrInterfaceType.TypeIdentifier()
+			if typeIdentifier == nil {
+				continue
+			}
+			l.ExtendsInterfaces = append(l.ExtendsInterfaces, typeIdentifier.GetText())
 		}
 	}
 }
