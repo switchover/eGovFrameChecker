@@ -185,7 +185,7 @@ Ini 파일 설정은 3개의 세션(`controller`, `service`, `repository`)과
 - `fileNameGlobPattern`: 파일이름 Glob 패턴
 - `classAnnotations`: 지정되어야 할 클래스 어노테이션 (여러 개는 콤마로 구분되며 or 조건으로 적용)
 - `methodAnnotations`: 활용되어야 하는 메소드 어노테이션 (여러 개는 콤마로 구분되며 or 조건으로 적용)
-- `conditionalImports`: 지정된 import를 포함하고 있는지 여부 (여러 개는 콤마로 구본되며 각각은 `className:fully.qualified.class.name` 형태로 지정)
+- `conditionalImports`: 지정된 import를 포함하고 있는지 여부 (여러 개는 콤마로 구분되며 각각은 `className:fully.qualified.class.name` 형태로 지정)
 - `implementation`: 인터페이스 구현 여부
 - `superClasses`: 상속되어야 하는 클래스 (여러 개는 콤마로 구분되며 or 조건으로 적용)
 - `interface`: 인터페이스 여부
