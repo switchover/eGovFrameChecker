@@ -11,6 +11,6 @@ func Examine(listener *java.Listener) (result bool) {
 		return
 	}
 
-	result, _ = common.CheckSuperClass("repository.jpa", listener)
+	result, _ = common.CheckExtendsInterface("repository.jpa", listener)
 	return
 }

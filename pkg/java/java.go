@@ -17,6 +17,7 @@ type Listener struct {
 	SuperClassName    string
 	HasImplementation bool
 	ClassAnnotations  []string
+	ExtendsInterfaces []string
 	MethodAnnotations map[string]bool
 	FieldAnnotations  map[string]bool
 	FieldTypes        []string
@@ -110,6 +111,13 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 			if strings.HasPrefix(annotationCtx.GetText(), "@") {
 				l.ClassAnnotations = append(l.ClassAnnotations, "@"+annotationCtx.QualifiedName().GetText())
 			}
+		}
+	}
+
+	// extends
+	for _, typeType := range ctx.AllTypeList() {
+		for _, extendType := range typeType.AllTypeType() {
+			l.ExtendsInterfaces = append(l.ExtendsInterfaces, extendType.ClassOrInterfaceType().TypeIdentifier().GetText())
 		}
 	}
 }

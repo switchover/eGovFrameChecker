@@ -95,6 +95,19 @@ func CheckSuperClass(section string, listener *java.Listener) (bool, string) {
 	return check, listener.SuperClassName
 }
 
+func CheckExtendsInterface(section string, listener *java.Listener) (bool, string) {
+	if !listener.IsInterface || len(listener.ExtendsInterfaces) == 0 {
+		return false, ""
+	}
+	superClasses := viper.GetString(fmt.Sprintf("%s.%s", section, "superClasses"))
+	for _, superClass := range strings.Split(superClasses, ",") {
+		if slices.Contains(listener.ExtendsInterfaces, strings.TrimSpace(superClass)) {
+			return true, superClass
+		}
+	}
+	return false, ""
+}
+
 func recursiveFieldTypesCheck(expectedFieldTypes string, currentListener *java.Listener, superClassName string) (bool, string) {
 	listener, err := getListenerOfSuperClass(superClassName, currentListener)
 	if err != nil {
