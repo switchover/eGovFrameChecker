@@ -31,6 +31,7 @@ func Examine(files []string) (err error) {
 
 	total := 0
 	violations := 0
+	logList := make([]string, 0, 10)
 	for i, f := range files {
 		if verbose {
 			log.Printf("%d: %s", i+1, f)
@@ -63,19 +64,19 @@ func Examine(files []string) (err error) {
 		controller := target
 		requestMapping := target
 		if !classResult && !methodResult {
-			log.Printf("%s- Controller(%s%s%s) violates the class and method rules.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Controller(%s%s%s) violates the class and method rules.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			controller = ""
 			requestMapping = ""
 		} else if !classResult {
-			log.Printf("%s- Controller(%s%s%s) violates the class rule.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Controller(%s%s%s) violates the class rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			controller = ""
 		} else if !methodResult {
-			log.Printf("%s- Controller(%s%s%s) violates the method rule.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Controller(%s%s%s) violates the method rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			requestMapping = ""
 		}
@@ -112,6 +113,9 @@ func Examine(files []string) (err error) {
 		} else {
 			log.Printf("%s Controller(1 file) has %d violation.\n", c.IconNotOkay, violations)
 		}
+	}
+	for _, message := range logList {
+		log.Printf("%s", message)
 	}
 	log.Println("--------------------------------------------------------------------------------")
 
