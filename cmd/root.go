@@ -71,7 +71,7 @@ func setDefaultValues() {
 	viper.SetDefault("service.classAnnotations", "@Service")
 	viper.SetDefault("service.superClasses", "EgovAbstractServiceImpl")
 
-	viper.SetDefault("repository.fileNameGlobPattern", "*{DAO,Mapper,Repository}")
+	viper.SetDefault("repository.fileNameGlobPattern", "*{DAO,Dao,Mapper,Repository}")
 
 	viper.SetDefault("repository.ibatis.classAnnotations", "@Repository")
 	viper.SetDefault("repository.ibatis.superClasses", "EgovAbstractDAO,EgovComAbstractDAO")
@@ -79,8 +79,9 @@ func setDefaultValues() {
 	viper.SetDefault("repository.mybatis.classAnnotations", "@Repository")
 	viper.SetDefault("repository.mybatis.superClasses", "EgovAbstractMapper,EgovComAbstractDAO")
 
-	viper.SetDefault("repository.mapper.classAnnotations", "@Mapper")
+	viper.SetDefault("repository.mapper.classAnnotations", "@Mapper,@EgovMapper")
 	viper.SetDefault("repository.mapper.interface", true)
+	viper.SetDefault("repository.mapper.conditionalImports", "Mapper:org.egovframe.rte.psl.dataaccess.mapper.Mapper")
 
 	viper.SetDefault("repository.jpa.classAnnotations", "@Repository")
 	viper.SetDefault("repository.jpa.interface", true)

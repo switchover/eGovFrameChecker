@@ -55,7 +55,7 @@ func Examine(files []string) (err error) {
 		listener := &java.Listener{}
 		antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
 
-		classResult := common.CheckClassAnnotations("controller", listener)
+		classResult, _ := common.CheckClassAnnotations("controller", listener)
 		methodResult := common.CheckMethodAnnotations("controller", listener)
 
 		total++

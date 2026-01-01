@@ -198,8 +198,8 @@ func inputDataAccessLayer() {
 
 		checkPrompt = promptui.Select{
 			Label: fmt.Sprintf("When applying the Mapper interface, "+
-				"are the %sMapperConfigurer%s and %s@Mapper%s provided by eGovFrame being used? [Yes/No]",
-				c.LightBlue, c.Reset, c.LightBlue, c.Reset),
+				"are the %sMapperConfigurer%s and %s@Mapper%s/%s@EgovMapper%s provided by eGovFrame being used? [Yes/No]",
+				c.LightBlue, c.Reset, c.LightBlue, c.Reset, c.LightBlue, c.Reset),
 			Items: []string{"Yes", "No"},
 		}
 		_, yesOrNo, err = checkPrompt.Run()
