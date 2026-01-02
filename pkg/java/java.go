@@ -121,7 +121,10 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 			if classOrInterfaceType == nil {
 				continue
 			}
-			typeIdentifier := classOrInterfaceType.TypeIdentifier()
+			if len(classOrInterfaceType.ClassType().AllTypeIdentifier()) == 0 {
+				continue
+			}
+			typeIdentifier := classOrInterfaceType.ClassType().TypeIdentifier(0)
 			if typeIdentifier == nil {
 				continue
 			}

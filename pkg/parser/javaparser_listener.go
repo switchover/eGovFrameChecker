@@ -10,6 +10,9 @@ type JavaParserListener interface {
 	// EnterCompilationUnit is called when entering the compilationUnit production.
 	EnterCompilationUnit(c *CompilationUnitContext)
 
+	// EnterModularCompulationUnit is called when entering the modularCompulationUnit production.
+	EnterModularCompulationUnit(c *ModularCompulationUnitContext)
+
 	// EnterPackageDeclaration is called when entering the packageDeclaration production.
 	EnterPackageDeclaration(c *PackageDeclarationContext)
 
@@ -130,8 +133,11 @@ type JavaParserListener interface {
 	// EnterArrayInitializer is called when entering the arrayInitializer production.
 	EnterArrayInitializer(c *ArrayInitializerContext)
 
-	// EnterClassOrInterfaceType is called when entering the classOrInterfaceType production.
-	EnterClassOrInterfaceType(c *ClassOrInterfaceTypeContext)
+	// EnterClassType is called when entering the classType production.
+	EnterClassType(c *ClassTypeContext)
+
+	// EnterPackageName is called when entering the packageName production.
+	EnterPackageName(c *PackageNameContext)
 
 	// EnterTypeArgument is called when entering the typeArgument production.
 	EnterTypeArgument(c *TypeArgumentContext)
@@ -150,9 +156,6 @@ type JavaParserListener interface {
 
 	// EnterFormalParameter is called when entering the formalParameter production.
 	EnterFormalParameter(c *FormalParameterContext)
-
-	// EnterLastFormalParameter is called when entering the lastFormalParameter production.
-	EnterLastFormalParameter(c *LastFormalParameterContext)
 
 	// EnterLambdaLVTIList is called when entering the lambdaLVTIList production.
 	EnterLambdaLVTIList(c *LambdaLVTIListContext)
@@ -178,11 +181,14 @@ type JavaParserListener interface {
 	// EnterAnnotation is called when entering the annotation production.
 	EnterAnnotation(c *AnnotationContext)
 
-	// EnterElementValuePairs is called when entering the elementValuePairs production.
-	EnterElementValuePairs(c *ElementValuePairsContext)
+	// EnterAnnotationFieldValues is called when entering the annotationFieldValues production.
+	EnterAnnotationFieldValues(c *AnnotationFieldValuesContext)
 
-	// EnterElementValuePair is called when entering the elementValuePair production.
-	EnterElementValuePair(c *ElementValuePairContext)
+	// EnterAnnotationFieldValue is called when entering the annotationFieldValue production.
+	EnterAnnotationFieldValue(c *AnnotationFieldValueContext)
+
+	// EnterAnnotationValue is called when entering the annotationValue production.
+	EnterAnnotationValue(c *AnnotationValueContext)
 
 	// EnterElementValue is called when entering the elementValue production.
 	EnterElementValue(c *ElementValueContext)
@@ -216,9 +222,6 @@ type JavaParserListener interface {
 
 	// EnterModuleDeclaration is called when entering the moduleDeclaration production.
 	EnterModuleDeclaration(c *ModuleDeclarationContext)
-
-	// EnterModuleBody is called when entering the moduleBody production.
-	EnterModuleBody(c *ModuleBodyContext)
 
 	// EnterModuleDirective is called when entering the moduleDirective production.
 	EnterModuleDirective(c *ModuleDirectiveContext)
@@ -295,9 +298,6 @@ type JavaParserListener interface {
 	// EnterEnhancedForControl is called when entering the enhancedForControl production.
 	EnterEnhancedForControl(c *EnhancedForControlContext)
 
-	// EnterParExpression is called when entering the parExpression production.
-	EnterParExpression(c *ParExpressionContext)
-
 	// EnterExpressionList is called when entering the expressionList production.
 	EnterExpressionList(c *ExpressionListContext)
 
@@ -349,6 +349,12 @@ type JavaParserListener interface {
 	// EnterPattern is called when entering the pattern production.
 	EnterPattern(c *PatternContext)
 
+	// EnterComponentPatternList is called when entering the componentPatternList production.
+	EnterComponentPatternList(c *ComponentPatternListContext)
+
+	// EnterComponentPattern is called when entering the componentPattern production.
+	EnterComponentPattern(c *ComponentPatternContext)
+
 	// EnterLambdaExpression is called when entering the lambdaExpression production.
 	EnterLambdaExpression(c *LambdaExpressionContext)
 
@@ -367,14 +373,17 @@ type JavaParserListener interface {
 	// EnterSwitchLabeledRule is called when entering the switchLabeledRule production.
 	EnterSwitchLabeledRule(c *SwitchLabeledRuleContext)
 
-	// EnterGuardedPattern is called when entering the guardedPattern production.
-	EnterGuardedPattern(c *GuardedPatternContext)
+	// EnterGuard is called when entering the guard production.
+	EnterGuard(c *GuardContext)
+
+	// EnterCasePattern is called when entering the casePattern production.
+	EnterCasePattern(c *CasePatternContext)
 
 	// EnterSwitchRuleOutcome is called when entering the switchRuleOutcome production.
 	EnterSwitchRuleOutcome(c *SwitchRuleOutcomeContext)
 
-	// EnterClassType is called when entering the classType production.
-	EnterClassType(c *ClassTypeContext)
+	// EnterClassOrInterfaceType is called when entering the classOrInterfaceType production.
+	EnterClassOrInterfaceType(c *ClassOrInterfaceTypeContext)
 
 	// EnterCreator is called when entering the creator production.
 	EnterCreator(c *CreatorContext)
@@ -426,6 +435,9 @@ type JavaParserListener interface {
 
 	// ExitCompilationUnit is called when exiting the compilationUnit production.
 	ExitCompilationUnit(c *CompilationUnitContext)
+
+	// ExitModularCompulationUnit is called when exiting the modularCompulationUnit production.
+	ExitModularCompulationUnit(c *ModularCompulationUnitContext)
 
 	// ExitPackageDeclaration is called when exiting the packageDeclaration production.
 	ExitPackageDeclaration(c *PackageDeclarationContext)
@@ -547,8 +559,11 @@ type JavaParserListener interface {
 	// ExitArrayInitializer is called when exiting the arrayInitializer production.
 	ExitArrayInitializer(c *ArrayInitializerContext)
 
-	// ExitClassOrInterfaceType is called when exiting the classOrInterfaceType production.
-	ExitClassOrInterfaceType(c *ClassOrInterfaceTypeContext)
+	// ExitClassType is called when exiting the classType production.
+	ExitClassType(c *ClassTypeContext)
+
+	// ExitPackageName is called when exiting the packageName production.
+	ExitPackageName(c *PackageNameContext)
 
 	// ExitTypeArgument is called when exiting the typeArgument production.
 	ExitTypeArgument(c *TypeArgumentContext)
@@ -567,9 +582,6 @@ type JavaParserListener interface {
 
 	// ExitFormalParameter is called when exiting the formalParameter production.
 	ExitFormalParameter(c *FormalParameterContext)
-
-	// ExitLastFormalParameter is called when exiting the lastFormalParameter production.
-	ExitLastFormalParameter(c *LastFormalParameterContext)
 
 	// ExitLambdaLVTIList is called when exiting the lambdaLVTIList production.
 	ExitLambdaLVTIList(c *LambdaLVTIListContext)
@@ -595,11 +607,14 @@ type JavaParserListener interface {
 	// ExitAnnotation is called when exiting the annotation production.
 	ExitAnnotation(c *AnnotationContext)
 
-	// ExitElementValuePairs is called when exiting the elementValuePairs production.
-	ExitElementValuePairs(c *ElementValuePairsContext)
+	// ExitAnnotationFieldValues is called when exiting the annotationFieldValues production.
+	ExitAnnotationFieldValues(c *AnnotationFieldValuesContext)
 
-	// ExitElementValuePair is called when exiting the elementValuePair production.
-	ExitElementValuePair(c *ElementValuePairContext)
+	// ExitAnnotationFieldValue is called when exiting the annotationFieldValue production.
+	ExitAnnotationFieldValue(c *AnnotationFieldValueContext)
+
+	// ExitAnnotationValue is called when exiting the annotationValue production.
+	ExitAnnotationValue(c *AnnotationValueContext)
 
 	// ExitElementValue is called when exiting the elementValue production.
 	ExitElementValue(c *ElementValueContext)
@@ -633,9 +648,6 @@ type JavaParserListener interface {
 
 	// ExitModuleDeclaration is called when exiting the moduleDeclaration production.
 	ExitModuleDeclaration(c *ModuleDeclarationContext)
-
-	// ExitModuleBody is called when exiting the moduleBody production.
-	ExitModuleBody(c *ModuleBodyContext)
 
 	// ExitModuleDirective is called when exiting the moduleDirective production.
 	ExitModuleDirective(c *ModuleDirectiveContext)
@@ -712,9 +724,6 @@ type JavaParserListener interface {
 	// ExitEnhancedForControl is called when exiting the enhancedForControl production.
 	ExitEnhancedForControl(c *EnhancedForControlContext)
 
-	// ExitParExpression is called when exiting the parExpression production.
-	ExitParExpression(c *ParExpressionContext)
-
 	// ExitExpressionList is called when exiting the expressionList production.
 	ExitExpressionList(c *ExpressionListContext)
 
@@ -766,6 +775,12 @@ type JavaParserListener interface {
 	// ExitPattern is called when exiting the pattern production.
 	ExitPattern(c *PatternContext)
 
+	// ExitComponentPatternList is called when exiting the componentPatternList production.
+	ExitComponentPatternList(c *ComponentPatternListContext)
+
+	// ExitComponentPattern is called when exiting the componentPattern production.
+	ExitComponentPattern(c *ComponentPatternContext)
+
 	// ExitLambdaExpression is called when exiting the lambdaExpression production.
 	ExitLambdaExpression(c *LambdaExpressionContext)
 
@@ -784,14 +799,17 @@ type JavaParserListener interface {
 	// ExitSwitchLabeledRule is called when exiting the switchLabeledRule production.
 	ExitSwitchLabeledRule(c *SwitchLabeledRuleContext)
 
-	// ExitGuardedPattern is called when exiting the guardedPattern production.
-	ExitGuardedPattern(c *GuardedPatternContext)
+	// ExitGuard is called when exiting the guard production.
+	ExitGuard(c *GuardContext)
+
+	// ExitCasePattern is called when exiting the casePattern production.
+	ExitCasePattern(c *CasePatternContext)
 
 	// ExitSwitchRuleOutcome is called when exiting the switchRuleOutcome production.
 	ExitSwitchRuleOutcome(c *SwitchRuleOutcomeContext)
 
-	// ExitClassType is called when exiting the classType production.
-	ExitClassType(c *ClassTypeContext)
+	// ExitClassOrInterfaceType is called when exiting the classOrInterfaceType production.
+	ExitClassOrInterfaceType(c *ClassOrInterfaceTypeContext)
 
 	// ExitCreator is called when exiting the creator production.
 	ExitCreator(c *CreatorContext)

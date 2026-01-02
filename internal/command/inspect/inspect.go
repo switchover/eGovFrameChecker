@@ -40,8 +40,9 @@ func Inspect() {
 
 	toBeCheckedSuperClasses := common.GetToBeCheckedSuperClasses()
 	if len(toBeCheckedSuperClasses) > 1 {
-		log.Printf("%s%s Super classes to be checked: %v\n", c.IconCaution, c.Reset, strings.Join(toBeCheckedSuperClasses, ", "))
+		log.Printf("%s%s Super classes to be checked: %s%s%s\n", c.IconCaution, c.Reset,
+			c.MagentaUnderline, strings.Join(toBeCheckedSuperClasses, c.Reset+", "+c.MagentaUnderline), c.Reset)
 	} else if len(toBeCheckedSuperClasses) == 1 {
-		log.Printf("%s%s Super class to be checked: %v\n", c.IconCaution, c.Reset, toBeCheckedSuperClasses[0])
+		log.Printf("%s%s Super class to be checked: %s%s%s\n", c.IconCaution, c.Reset, c.MagentaUnderline, toBeCheckedSuperClasses[0], c.Reset)
 	}
 }
