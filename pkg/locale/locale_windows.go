@@ -14,7 +14,7 @@ var (
 	procGetUserDefaultLocaleName = kernel32.NewProc("GetUserDefaultLocaleName")
 )
 
-const localNameMaxLength = 85
+const localeNameMaxLength = 85
 
 // GetLanguage returns the language code from the system locale.
 // For example, if the locale is "ko-KR", it returns "ko".
@@ -35,10 +35,10 @@ func GetLanguage() string {
 
 // getWindowsLocale gets the locale using Windows API.
 func getWindowsLocale() string {
-	buf := make([]uint16, localNameMaxLength)
+	buf := make([]uint16, localeNameMaxLength)
 	ret, _, _ := procGetUserDefaultLocaleName.Call(
 		uintptr(unsafe.Pointer(&buf[0])),
-		uintptr(localNameMaxLength),
+		uintptr(localeNameMaxLength),
 	)
 	if ret == 0 {
 		return ""
