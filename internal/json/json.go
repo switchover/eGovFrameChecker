@@ -61,7 +61,7 @@ func (js *Streamer) WriteSummary(summary Summary) error {
 		return err
 	}
 	// write summary without a trailing comma; arrays (if any) will insert the comma before their key
-	if _, err := js.file.WriteString(fmt.Sprintf("  \"summary\": %s\n", summaryBytes)); err != nil {
+	if _, err := js.file.WriteString(fmt.Sprintf("  \"summary\": %s", summaryBytes)); err != nil {
 		return err
 	}
 	js.summaryWritten = true
