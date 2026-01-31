@@ -120,7 +120,7 @@ func (js *Streamer) AddViolation(fileType FileType, violation Violation) error {
 	}
 
 	// marshal violation as compact JSON (one-line) to simplify streaming and comma placement
-	violationBytes, err := json.MarshalIndent(violation, "	  ", "  ")
+	violationBytes, err := json.MarshalIndent(violation, "    ", "  ")
 	if err != nil {
 		return err
 	}
