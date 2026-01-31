@@ -51,11 +51,11 @@ Docker를 통한 다른 명령 실행은 [Docker Hub](https://hub.docker.com/r/s
 $ ./egovchecker checklist
 Use the arrow keys to navigate: ↓ ↑ → ← 
 ? eGovFrame version used: 
-    v4.3
-  ▸ v4.2
+    v5.0
+  ▸ v4.3
+    v4.2
     v4.1
-    v4.0
-↓   v3.10
+↓   v4.0
 ```
 제시된 체크리스트에 대해 화살표를 통해 선택하거나, 직접 입력하면 다음과 같이 최종 결과를 확인할 수 있습니다.
 ```
@@ -93,6 +93,8 @@ Usage:
 
 Flags:
   -h, --help              help for inspect
+  -j, --json string       Output result to JSON file
+  -l, --locale string     Locale(eg. 'en', 'ko', etc) for output result message in JSON file
   -o, --output            Output result to CSV file
   -p, --packages string   Packages to inspect with comma separated
   -s, --skip              Skip file error
@@ -104,13 +106,15 @@ Global Flags:
 ```
 세부 옵션은 다음과 같습니다.
 
-| 옵션                 | 설명                       | 비고 |
-|--------------------|--------------------------|----|
-| `-t`, `--target`   | 검사할 대상 디렉토리를 지정합니다.      | 필수 |
-| `-p`, `--packages` | 검사할 패키지를 콤마로 구분하여 입력합니다. | 필수 |
-| `-o`, `--output`   | 결과를 CSV 파일들로 출력합니다.      |    |
-| `-s`, `--skip`     | 파일 처리 오류를 무시하고 진행합니다.    |    |
-| `-v`, `--verbose`  | 자세한 정보를 출력합니다.           |    |
+| 옵션                 | 설명                              | 비고                     |
+|--------------------|---------------------------------|------------------------|
+| `-t`, `--target`   | 검사할 대상 디렉토리를 지정합니다.             | 필수                     |
+| `-p`, `--packages` | 검사할 패키지를 콤마로 구분하여 입력합니다.        | 필수                     |
+| `-o`, `--output`   | 결과를 CSV 파일들로 출력합니다.             |                        |
+| `-s`, `--skip`     | 파일 처리 오류를 무시하고 진행합니다.           |                        |
+| `-j`, `--json`     | 결과를 JSON 파일로 기록합니다.             |                        |
+| `-l`, `--locale`   | JSON 파일 내 결과 메시지에 대한 언어를 지정합니다. | 미지정 시 시스템 기본 locale 사용 |
+| `-v`, `--verbose`  | 자세한 정보를 출력합니다.                  |                        |
 
 참고로, `-o` 옵션을 지정하면 `controllers.csv`, `services.csv`, `repositories.csv` 3개의 csv(comma-separated values) 파일이 현 디렉토리에 저장되며,
 각 파일별 기준 충족 여부를 확인할 수 있습니다. (해당 내용은 실행 화면에도 표시됨)
@@ -134,6 +138,58 @@ $ ./egovchecker inspect -t ./test/sample -p egovframework -o
 2025/01/12 17:54:42 Output file written: repositories.csv
 ```
 
+### JSON Output Example
+`--json` 옵션 지정 시, 점검 결과를 다음과 같은 형식으로 생성하며 다른 프로그램(eg. IDE)에서 활용할 수 있습니다.
+
+```json
+{
+  "summary": {
+    "target": "sample",
+    "packages": "com",
+    "files": {
+      "total": 52,
+      "controllers": 12,
+      "services": 20,
+      "repositories": 21
+    }
+  },
+  "controller": [
+    {
+	    "file_path": "sample/com/egovframe/sample/web/SampleController.java",
+	    "package_name": "com.egovframe.sample.web",
+	    "class_name": "SampleController",
+	    "violation": "필수 클래스 어노테이션이 누락되었습니다.",
+	    "description": "@Controller, @RestController 클래스 어노테이션이 포함되어야 합니다."
+	  }
+  ],
+    "service": [
+        {
+            "file_path": "sample/com/egovframe/sample/service/impl/SampleServiceImpl.java",
+            "package_name": "com.egovframe.sample.service.service.impl",
+            "class_name": "SampleServiceImpl",
+            "violation": "필수 클래스 상속 규칙 미준수입니다.",
+            "description": "EgovAbstractServiceImpl 클래스 상속이 필요합니다."
+        }
+    ],    
+  "repository": [
+    {
+	    "file_path": "sample/com/egovframe/sample/service/impl/SampleDAO.java",
+	    "package_name": "com.egovframe.sample.service.service.impl",
+	    "class_name": "SampleDAO",
+	    "violation": "데이터 액세스 규칙 미준수입니다.",
+	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
+	  },
+    {
+	    "file_path": "sample/com/egovframe/sample/service/impl/SampleRepository.java",
+	    "package_name": "com.egovframe.sample.service.service.impl",
+	    "class_name": "SampleRepository",
+	    "violation": "데이터 액세스 규칙 미준수입니다.",
+	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
+	  }
+  ]
+}
+
+```
 
 ## Customizing `inspect` Command 
 `inspect` 명령은 내부적으로 다음과 같은 점검 규칙을 사용하며, 별도로 규칙을 수정해 적용할 수 있습니다.

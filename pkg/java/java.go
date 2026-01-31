@@ -12,6 +12,7 @@ import (
 
 type Listener struct {
 	*parser.BaseJavaParserListener
+	PackageName       string
 	ClassName         string
 	IsInterface       bool
 	SuperClassName    string
@@ -42,6 +43,10 @@ func (l *Listener) initialize() {
 	l.importedPackages = make(map[string]string)
 
 	l.isInitialized = true
+}
+
+func (l *Listener) EnterPackageDeclaration(ctx *parser.PackageDeclarationContext) {
+	l.PackageName = ctx.QualifiedName().GetText()
 }
 
 func (l *Listener) EnterImportDeclaration(ctx *parser.ImportDeclarationContext) {

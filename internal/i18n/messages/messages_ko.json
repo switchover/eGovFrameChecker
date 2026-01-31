@@ -1,0 +1,44 @@
+{
+  "errors": {
+    "CTR001": {
+      "code": "CTR001",
+      "message": "필수 클래스 및 메서드 어노테이션이 누락되었습니다.",
+      "description": "@Controller, @RestController 클래스 어노테이션 및 @RequestMapping, @GetMapping, @PostMapping 등의 메서드 어노테이션이 포함되어야 합니다."
+    },
+    "CTR002": {
+      "code": "CTR002",
+      "message": "필수 클래스 어노테이션이 누락되었습니다.",
+      "description": "@Controller, @RestController 클래스 어노테이션이 포함되어야 합니다."
+    },
+    "CTR003": {
+      "code": "CTR003",
+      "message": "필수 메서드 어노테이션이 누락되었습니다.",
+      "description": "@RequestMapping, @GetMapping, @PostMapping 등의 메서드 어노테이션이 포함되어야 합니다."
+    },
+    "SVC001": {
+      "code": "SVC001",
+      "message": "클래스 규칙(필수 어노테이션 누락 또는 지정 클래스 상속) 및 인터페이스화 규칙 미준수입니다.",
+      "description": "@Service 클래스 어노테이션이 포함되어야 하며, EgovAbstractServiceImpl 클래스 상속과 인터페이스화가 필요합니다."
+    },
+    "SVC002": {
+      "code": "SVC002",
+      "message": "필수 클래스 상속 규칙 미준수입니다.",
+      "description": "EgovAbstractServiceImpl 클래스 상속이 필요합니다."
+    },
+    "SVC003": {
+      "code": "SVC003",
+      "message": "필수 클래스 어노테이션 누락되었습니다.",
+      "description": "@Service 클래스 어노테이션이 포함되어야 합니다."
+    },
+    "SVC004": {
+      "code": "SVC004",
+      "message": "인터페이스화 규칙 미준수입니다.",
+      "description": "서비스별 인터페이스가 정의되고 구현(implements)되어야 합니다."
+    },
+    "DAO001": {
+      "code": "DAO001",
+      "message": "데이터 액세스 규칙 미준수입니다.",
+      "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
+    }
+  }
+}

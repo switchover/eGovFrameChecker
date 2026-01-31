@@ -9,12 +9,15 @@ import (
 	"github.com/spf13/viper"
 	c "github.com/switchover/eGovFrameChecker/internal/constant"
 	"github.com/switchover/eGovFrameChecker/internal/examine/common"
+	"github.com/switchover/eGovFrameChecker/internal/i18n"
+	"github.com/switchover/eGovFrameChecker/internal/json"
 	"github.com/switchover/eGovFrameChecker/pkg/csv"
 	"github.com/switchover/eGovFrameChecker/pkg/java"
+	"github.com/switchover/eGovFrameChecker/pkg/locale"
 	"github.com/switchover/eGovFrameChecker/pkg/parser"
 )
 
-func Examine(files []string) (err error) {
+func Examine(files []string, streamer *json.Streamer) (err error) {
 	verbose := viper.GetBool("inspect.verbose")
 	output := viper.GetBool("inspect.output")
 	skipFileError := viper.GetBool("inspect.skip")
@@ -69,16 +72,64 @@ func Examine(files []string) (err error) {
 			violations++
 			controller = ""
 			requestMapping = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("CTR001", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Controller, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		} else if !classResult {
 			logList = append(logList, fmt.Sprintf("%s- Controller(%s%s%s) violates the class rule.%s\n",
 				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			controller = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("CTR002", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Controller, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		} else if !methodResult {
 			logList = append(logList, fmt.Sprintf("%s- Controller(%s%s%s) violates the method rule.%s\n",
 				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			requestMapping = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("CTR003", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Controller, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		}
 		record = append(record, controller, requestMapping)
 

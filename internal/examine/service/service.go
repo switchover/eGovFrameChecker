@@ -9,12 +9,15 @@ import (
 	"github.com/spf13/viper"
 	c "github.com/switchover/eGovFrameChecker/internal/constant"
 	"github.com/switchover/eGovFrameChecker/internal/examine/common"
+	"github.com/switchover/eGovFrameChecker/internal/i18n"
+	"github.com/switchover/eGovFrameChecker/internal/json"
 	"github.com/switchover/eGovFrameChecker/pkg/csv"
 	"github.com/switchover/eGovFrameChecker/pkg/java"
+	"github.com/switchover/eGovFrameChecker/pkg/locale"
 	"github.com/switchover/eGovFrameChecker/pkg/parser"
 )
 
-func Examine(files []string) (err error) {
+func Examine(files []string, streamer *json.Streamer) (err error) {
 	verbose := viper.GetBool("inspect.verbose")
 	output := viper.GetBool("inspect.output")
 	skipFileError := viper.GetBool("inspect.skip")
@@ -76,16 +79,70 @@ func Examine(files []string) (err error) {
 			violations++
 			service = ""
 			implement = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("SVC001", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Service, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		} else if !(classResult && extendsResult) {
 			logList = append(logList, fmt.Sprintf("%s- Service(%s%s%s) violates the class rule.%s\n",
 				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			service = ""
+			if streamer != nil {
+				messageKey := ""
+				if classResult {
+					messageKey = "SVC002"
+				} else {
+					messageKey = "SVC003"
+				}
+				message, err := i18n.GetErrorMessage(messageKey, locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Service, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		} else if !implementsResult {
 			logList = append(logList, fmt.Sprintf("%s- Service(%s%s%s) violates the interface rule.%s\n",
 				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			implement = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("SVC004", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Service, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		}
 		record = append(record, service, implement, superClass)
 

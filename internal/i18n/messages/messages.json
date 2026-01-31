@@ -1,0 +1,44 @@
+{
+  "errors": {
+    "CTR001": {
+      "code": "CTR001",
+      "message": "Required class and method annotations are missing.",
+      "description": "The class must include @Controller or @RestController annotations, and methods must include @RequestMapping, @GetMapping, @PostMapping, or similar annotations."
+    },
+    "CTR002": {
+      "code": "CTR002",
+      "message": "Required class annotations are missing.",
+      "description": "@Controller or @RestController class annotations must be included."
+    },
+    "CTR003": {
+      "code": "CTR003",
+      "message": "Required method annotations are missing.",
+      "description": "Method annotations such as @RequestMapping, @GetMapping, or @PostMapping must be included."
+    },
+    "SVC001": {
+      "code": "SVC001",
+      "message": "Class annotation and interface requirements are not satisfied.",
+      "description": "@Service must annotate the class, it should extend EgovAbstractServiceImpl, and the service must implement its interface."
+    },
+    "SVC002": {
+      "code": "SVC002",
+      "message": "Required class inheritance rule is not satisfied.",
+      "description": "The class must inherit from EgovAbstractServiceImpl."
+    },
+    "SVC003": {
+      "code": "SVC003",
+      "message": "Required class annotation is missing.",
+      "description": "@Service annotation must be present on the class."
+    },
+    "SVC004": {
+      "code": "SVC004",
+      "message": "Interface implementation rule is not satisfied.",
+      "description": "Each service must declare a corresponding interface and provide an implementation."
+    },
+    "DAO001": {
+      "code": "DAO001",
+      "message": "Data-access rule is not satisfied.",
+      "description": "The class must extend EgovAbstractDAO or EgovAbstractMapper, specify the @Mapper annotation, or use JPA/Hibernate."
+    }
+  }
+}
