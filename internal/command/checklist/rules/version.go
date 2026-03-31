@@ -76,7 +76,7 @@ func jdkVersion() (ok bool, semVer *semver.Version) {
 		Label:     "Minimum supported or applied JDK version",
 		CursorPos: 3,
 		Items: []string{
-			"5 (1.5)", "6 (1.6)", "7 (1.7)", "8 (LTS)", "11 (LTS)", "17 (LTS)", "21 (LTS)", "23 (LTS)", "25 (LTS)"},
+			"5 (1.5)", "6 (1.6)", "7 (1.7)", "8 (LTS)", "11 (LTS)", "17 (LTS)", "21 (LTS)", "25 (LTS)"},
 	}
 	_, versionString, err := prompt.Run()
 	if err != nil {
