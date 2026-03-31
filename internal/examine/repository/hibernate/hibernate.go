@@ -6,7 +6,7 @@ import (
 )
 
 func Examine(listener *java.Listener) (result bool) {
-	result = common.CheckClassAnnotations("repository.hibernate", listener)
+	result, _ = common.CheckClassAnnotations("repository.hibernate", listener)
 	if !result {
 		return
 	}

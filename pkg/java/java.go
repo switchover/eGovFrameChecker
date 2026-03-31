@@ -12,11 +12,13 @@ import (
 
 type Listener struct {
 	*parser.BaseJavaParserListener
+	PackageName       string
 	ClassName         string
 	IsInterface       bool
 	SuperClassName    string
 	HasImplementation bool
 	ClassAnnotations  []string
+	ExtendsInterfaces []string
 	MethodAnnotations map[string]bool
 	FieldAnnotations  map[string]bool
 	FieldTypes        []string
@@ -41,6 +43,10 @@ func (l *Listener) initialize() {
 	l.importedPackages = make(map[string]string)
 
 	l.isInitialized = true
+}
+
+func (l *Listener) EnterPackageDeclaration(ctx *parser.PackageDeclarationContext) {
+	l.PackageName = ctx.QualifiedName().GetText()
 }
 
 func (l *Listener) EnterImportDeclaration(ctx *parser.ImportDeclarationContext) {
@@ -110,6 +116,24 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 			if strings.HasPrefix(annotationCtx.GetText(), "@") {
 				l.ClassAnnotations = append(l.ClassAnnotations, "@"+annotationCtx.QualifiedName().GetText())
 			}
+		}
+	}
+
+	// extends
+	for _, typeType := range ctx.AllTypeList() {
+		for _, extendType := range typeType.AllTypeType() {
+			classOrInterfaceType := extendType.ClassOrInterfaceType()
+			if classOrInterfaceType == nil {
+				continue
+			}
+			if len(classOrInterfaceType.ClassType().AllTypeIdentifier()) == 0 {
+				continue
+			}
+			typeIdentifier := classOrInterfaceType.ClassType().TypeIdentifier(0)
+			if typeIdentifier == nil {
+				continue
+			}
+			l.ExtendsInterfaces = append(l.ExtendsInterfaces, typeIdentifier.GetText())
 		}
 	}
 }

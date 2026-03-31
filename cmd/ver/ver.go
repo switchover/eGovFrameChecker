@@ -23,7 +23,14 @@ import "fmt"
 //   - CSV Writer 오류 시 에러 조치
 //   - 설정 상 EntityManager 필드 클래스 오류 수정
 //   - Check List 처리 오류 수정 등
-const CheckerVersion = "v0.4.1"
+//
+// v0.5 : 
+//   - eGovFrame v5.0 점검 기준 추가
+//   - 점검 결과 JSON 저장 옵션 추가
+//   - Java grammar 업데이트 (Java 24 지원)
+//   - Spring Data JPA 관련 체크 추가
+//   - 점검 결과 출력 보완 (Layer별 세부 위반 리스트를 결과 아래로 조정)
+const CheckerVersion = "v0.5"
 
 // build flags
 var (

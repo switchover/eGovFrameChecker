@@ -1,11 +1,20 @@
 {
   "versions": {
+    "5.0.0": {
+      "jdk": ">= 17",
+      "jdk-message": "eGovFrame v5.0은 최소 JDK 17 이상을 지원해야 합니다.",
+      "spring": ">= 6.2.11, < 6.3.0",
+      "spring-message": "eGovFrame v5.0은 Spring v6.2.11을 적용해야 합니다(단, 패치 버전은 상위 버전 가능).",
+      "boot": ">= 3.5.6, < 3.6.0",
+      "boot-base": "3.5.6",
+      "boot-message": "eGovFrame v5.0은 Spring Boot v3.5.6을 적용해야 합니다(단, 패치 버전은 상위 버전 가능)."
+    },
     "4.3.0": {
       "jdk": ">= 8",
       "jdk-message": "eGovFrame v4.3은 최소 JDK 1.8 이상을 지원해야 합니다.",
-      "spring": ">= 5.3.37",
+      "spring": ">= 5.3.37, < 6.0.0",
       "spring-message": "eGovFrame v4.3은 Spring v5.3.37을 적용해야 합니다(단, 패치 버전은 상위 버전 가능).",
-      "boot": ">= 2.7.18",
+      "boot": ">= 2.7.18, < 3.0.0",
       "boot-base": "2.7.18",
       "boot-message": "eGovFrame v4.3은 Spring Boot v2.7.18을 적용해야 합니다(단, 패치 버전은 상위 버전 가능)."
     },

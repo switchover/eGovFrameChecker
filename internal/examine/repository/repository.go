@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -13,12 +14,15 @@ import (
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/jpa"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/mapper"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/mybatis"
+	"github.com/switchover/eGovFrameChecker/internal/i18n"
+	"github.com/switchover/eGovFrameChecker/internal/json"
 	"github.com/switchover/eGovFrameChecker/pkg/csv"
 	"github.com/switchover/eGovFrameChecker/pkg/java"
+	"github.com/switchover/eGovFrameChecker/pkg/locale"
 	"github.com/switchover/eGovFrameChecker/pkg/parser"
 )
 
-func Examine(files []string) (err error) {
+func Examine(files []string, streamer *json.Streamer) (err error) {
 	verbose := viper.GetBool("inspect.verbose")
 	output := viper.GetBool("inspect.output")
 	skipFileError := viper.GetBool("inspect.skip")
@@ -35,6 +39,7 @@ func Examine(files []string) (err error) {
 
 	total := 0
 	violations := 0
+	logList := make([]string, 0, 10)
 	for i, f := range files {
 		if verbose {
 			log.Printf("%d: %s", i+1, f)
@@ -51,8 +56,8 @@ func Examine(files []string) (err error) {
 		}
 
 		if !result && listener.IsInterface && len(listener.ClassAnnotations) == 0 {
-			log.Printf("%s- Repository(%s) excluded because it's a simple interface.%s\n",
-				c.Yellow, listener.ClassName, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it's a simple interface.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
 			continue
 		}
 
@@ -61,10 +66,26 @@ func Examine(files []string) (err error) {
 		record := []string{target}
 		criteria := target
 		if !result {
-			log.Printf("%s- Repository(%s%s%s) violates the repository rule.%s\n",
-				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset)
+			logList = append(logList, fmt.Sprintf("%s- Repository(%s%s%s) violates the repository rule.%s\n",
+				c.Magenta, c.MagentaUnderline, listener.ClassName, c.MagentaNoUnderline, c.Reset))
 			violations++
 			criteria = ""
+			if streamer != nil {
+				message, err := i18n.GetErrorMessage("DAO001", locale.GetLanguage())
+				if err != nil {
+					return err
+				}
+				err = streamer.AddViolation(json.Repository, json.Violation{
+					FilePath:    f,
+					PackageName: listener.PackageName,
+					ClassName:   listener.ClassName,
+					Violation:   message.Message,
+					Description: message.Description,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		}
 		record = append(record, criteria, superClassName)
 
@@ -99,6 +120,9 @@ func Examine(files []string) (err error) {
 		} else {
 			log.Printf("%s Repository(1 file) has %d violation.\n", c.IconNotOkay, violations)
 		}
+	}
+	for _, message := range logList {
+		log.Printf("%s", message)
 	}
 	log.Println("--------------------------------------------------------------------------------")
 

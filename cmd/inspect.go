@@ -11,12 +11,16 @@ func init() {
 	var packages string
 	var verbose bool
 	var output bool
+	var json string
+	var locale string
 	var skipFileError bool
 
 	inspectCmd.Flags().StringVarP(&target, "target", "t", "", "Target directory to inspect")
 	inspectCmd.Flags().StringVarP(&packages, "packages", "p", "", "Packages to inspect with comma separated")
 	inspectCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 	inspectCmd.Flags().BoolVarP(&output, "output", "o", false, "Output result to CSV file")
+	inspectCmd.Flags().StringVarP(&json, "json", "j", "", "Output result to JSON file")
+	inspectCmd.Flags().StringVarP(&locale, "locale", "l", "", "Locale(eg. 'en', 'ko', etc) for output result message in JSON file")
 	inspectCmd.Flags().BoolVarP(&skipFileError, "skip", "s", false, "Skip file error")
 
 	_ = inspectCmd.MarkFlagRequired("target")
@@ -26,6 +30,8 @@ func init() {
 	_ = viper.BindPFlag("inspect.packages", inspectCmd.Flags().Lookup("packages"))
 	_ = viper.BindPFlag("inspect.verbose", inspectCmd.Flags().Lookup("verbose"))
 	_ = viper.BindPFlag("inspect.output", inspectCmd.Flags().Lookup("output"))
+	_ = viper.BindPFlag("inspect.json", inspectCmd.Flags().Lookup("json"))
+	_ = viper.BindPFlag("inspect.locale", inspectCmd.Flags().Lookup("locale"))
 	_ = viper.BindPFlag("inspect.skip", inspectCmd.Flags().Lookup("skip"))
 
 	rootCmd.AddCommand(inspectCmd)
