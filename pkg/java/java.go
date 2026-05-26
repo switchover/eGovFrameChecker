@@ -15,6 +15,7 @@ type Listener struct {
 	PackageName       string
 	ClassName         string
 	IsInterface       bool
+	IsAnnotationType  bool
 	SuperClassName    string
 	HasImplementation bool
 	ClassAnnotations  []string
@@ -139,6 +140,25 @@ func (l *Listener) EnterInterfaceDeclaration(ctx *parser.InterfaceDeclarationCon
 }
 
 func (l *Listener) ExitInterfaceDeclaration(_ *parser.InterfaceDeclarationContext) {
+	if l.isInnerClass {
+		l.isInnerClass = false
+		return
+	}
+	l.currentClass = ""
+}
+
+func (l *Listener) EnterAnnotationTypeDeclaration(ctx *parser.AnnotationTypeDeclarationContext) {
+	if l.currentClass != "" { // inner class
+		l.isInnerClass = true
+		return
+	}
+	l.initialize()
+	l.ClassName = ctx.Identifier().GetText()
+	l.IsAnnotationType = true
+	l.currentClass = l.ClassName
+}
+
+func (l *Listener) ExitAnnotationTypeDeclaration(_ *parser.AnnotationTypeDeclarationContext) {
 	if l.isInnerClass {
 		l.isInnerClass = false
 		return
