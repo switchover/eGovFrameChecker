@@ -1,17 +1,20 @@
 package mapper
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/switchover/eGovFrameChecker/internal/examine/common"
 	"github.com/switchover/eGovFrameChecker/pkg/java"
 )
 
-func Examine(listener *java.Listener) (result bool) {
+func Examine(listener *java.Listener) (result bool, superClassName string) {
 	result, annotation := common.CheckClassAnnotations("repository.mapper", listener)
 	if !result {
 		return
 	}
+
+	superClassName = fmt.Sprintf("<%s>", annotation)
 
 	if strings.HasPrefix(annotation, "@") {
 		annotation = annotation[1:]
