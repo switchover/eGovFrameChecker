@@ -157,9 +157,8 @@ func check(f string) (result bool, listener *java.Listener, superClassName strin
 		return
 	}
 
-	result = mapper.Examine(listener)
+	result, superClassName = mapper.Examine(listener)
 	if result {
-		superClassName = "<@Mapper>"
 		return
 	}
 
