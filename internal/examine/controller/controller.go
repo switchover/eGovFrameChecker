@@ -61,6 +61,12 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 		classResult, _ := common.CheckClassAnnotations("controller", listener)
 		methodResult := common.CheckMethodAnnotations("controller", listener)
 
+		if listener.IsAnnotationType {
+			logList = append(logList, fmt.Sprintf("%s- Controller(%s) excluded because it's an annotation type.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
+			continue
+		}
+
 		total++
 		target := common.FormatClassName(listener.ClassName, f)
 		record := []string{target}
