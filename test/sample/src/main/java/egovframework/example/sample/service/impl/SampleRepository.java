@@ -1,10 +1,11 @@
 package egovframework.example.sample.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 //@Repository
-public interface SampleRepository extends JpaRepository<MemberEntity, Long> {
+public interface SampleRepository extends JpaRepository<SampleEntity, Long> {
     // 쿼리 메서드 자동 생성 예시
-    List<Member> findByName(String name);
+    List<SampleEntity> findByName(String name);
 }
