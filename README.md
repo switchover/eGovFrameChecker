@@ -177,14 +177,14 @@ $ ./egovchecker inspect -t ./test/sample -p egovframework -o
 	    "package_name": "com.egovframe.sample.service.service.impl",
 	    "class_name": "SampleDAO",
 	    "violation": "데이터 액세스 규칙 미준수입니다.",
-	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
+	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper/@EgovMapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
 	  },
     {
 	    "file_path": "sample/com/egovframe/sample/service/impl/SampleRepository.java",
 	    "package_name": "com.egovframe.sample.service.service.impl",
 	    "class_name": "SampleRepository",
 	    "violation": "데이터 액세스 규칙 미준수입니다.",
-	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
+	    "description": "EgovAbstractDAO 또는 EgovAbstractMapper 클래스를 상속하거나, @Mapper/@EgovMapper 어노테이션 지정 또는 JPA/Hibernate가 활용되어야 합니다. "
 	  }
   ]
 }

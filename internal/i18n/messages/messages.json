@@ -38,7 +38,7 @@
     "DAO001": {
       "code": "DAO001",
       "message": "Data-access rule is not satisfied.",
-      "description": "The class must extend EgovAbstractDAO or EgovAbstractMapper, specify the @Mapper annotation, or use JPA/Hibernate."
+      "description": "The class must extend EgovAbstractDAO or EgovAbstractMapper, specify the @Mapper/@EgovMapper annotation, or use JPA/Hibernate."
     }
   }
 }
