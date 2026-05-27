@@ -5,12 +5,13 @@ import (
 	"github.com/switchover/eGovFrameChecker/pkg/java"
 )
 
-func Examine(listener *java.Listener) (result bool) {
-	result, _ = common.CheckClassAnnotations("repository.jpa", listener)
+func Examine(listener *java.Listener) (result bool, isRepository bool) {
+	result, _ = common.CheckExtendsInterface("repository.jpa", listener)
 	if !result {
 		return
 	}
+	isRepository = true
 
-	result, _ = common.CheckExtendsInterface("repository.jpa", listener)
+	result, _ = common.CheckClassAnnotations("repository.jpa", listener)
 	return
 }
