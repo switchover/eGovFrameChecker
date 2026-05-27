@@ -30,7 +30,7 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 	var writer *csv.Writer
 	if output {
 		writer, err = csv.NewWriter("repositories.csv",
-			[]string{"Total list (*DAO.java or *Mapper.java)", "Extends EgovAbstract* or Use @Mapper", "Super Class"})
+			[]string{"Total list (*DAO.java or *Mapper.java)", "Extends EgovAbstract* or Use @Mapper/@EgovMapper", "Super Class"})
 		if err != nil {
 			return err
 		}
@@ -46,7 +46,7 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 		}
 
 		superClassName := ""
-		result, listener, superClassName, err := check(f)
+		result, listener, superClassName, isRepository, err := check(f)
 		if err != nil {
 			if skipFileError {
 				log.Printf("Failed to examine file but skipped: %v\n", err)
@@ -55,8 +55,14 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 			return err
 		}
 
-		if !result && listener.IsInterface && len(listener.ClassAnnotations) == 0 {
+		if !result && !isRepository && listener.IsInterface && len(listener.ClassAnnotations) == 0 {
 			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it's a simple interface.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
+			continue
+		}
+
+		if !result && listener.IsAnnotationType {
+			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it's an annotation type.%s\n",
 				c.Yellow, listener.ClassName, c.Reset))
 			continue
 		}
@@ -132,7 +138,7 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 	return
 }
 
-func check(f string) (result bool, listener *java.Listener, superClassName string, err error) {
+func check(f string) (result bool, listener *java.Listener, superClassName string, isRepository bool, err error) {
 	data, err := os.ReadFile(f)
 	if err != nil {
 		return
@@ -157,13 +163,12 @@ func check(f string) (result bool, listener *java.Listener, superClassName strin
 		return
 	}
 
-	result = mapper.Examine(listener)
+	result, superClassName = mapper.Examine(listener)
 	if result {
-		superClassName = "<@Mapper>"
 		return
 	}
 
-	result = jpa.Examine(listener)
+	result, isRepository = jpa.Examine(listener)
 	if result {
 		superClassName = "<JPA>"
 		return

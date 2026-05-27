@@ -68,6 +68,12 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 			continue
 		}
 
+		if listener.IsAnnotationType {
+			logList = append(logList, fmt.Sprintf("%s- Service(%s) excluded because it's an annotation type.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
+			continue
+		}
+
 		total++
 		target := common.FormatClassName(listener.ClassName, f)
 		record := []string{target}
