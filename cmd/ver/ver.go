@@ -32,11 +32,14 @@ import "fmt"
 //   - 점검 결과 출력 보완 (Layer별 세부 위반 리스트를 결과 아래로 조정)
 //
 // v0.6 :
-//
 //   - CSV 결과 파일에 @EgovMapper 정보 추가
 //   - Annotation 클래스에 대한 Class 이름 미식별 오류 수정 및 점검 조건 처리 추가
 //   - Spring Data JPA의 Repository 클래스에 대한 점검 보완 (@Repository 미지정 식별)
-const CheckerVersion = "v0.6"
+//
+// v0.7 :
+//   - Spring Data JPA의 Repository 클래스에 대한 점검 수정 (@Repository 확인 제외)
+//   - MapStruct의 @Mapper 사용 인터페이스에 대한 제외 처리
+const CheckerVersion = "v0.7"
 
 // build flags
 var (
