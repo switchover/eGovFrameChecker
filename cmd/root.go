@@ -83,12 +83,15 @@ func setDefaultValues() {
 	viper.SetDefault("repository.mapper.interface", true)
 	viper.SetDefault("repository.mapper.conditionalImports", "Mapper:org.egovframe.rte.psl.dataaccess.mapper.Mapper")
 
-	viper.SetDefault("repository.jpa.classAnnotations", "@Repository")
 	viper.SetDefault("repository.jpa.interface", true)
 	viper.SetDefault("repository.jpa.superClasses", "JpaRepository,CrudRepository,PagingAndSortingRepository")
 
 	viper.SetDefault("repository.hibernate.classAnnotations", "@Repository")
 	viper.SetDefault("repository.hibernate.fieldTypes", "HibernateTemplate,EntityManager,EntityManagerFactory,Session,SessionFactory")
+
+	viper.SetDefault("repository.mapstruct.classAnnotations", "@Mapper")
+	viper.SetDefault("repository.mapstruct.interface", true)
+	viper.SetDefault("repository.mapstruct.conditionalImports", "Mapper:org.mapstruct.Mapper")
 }
 
 func getWorkingDirectory() string {

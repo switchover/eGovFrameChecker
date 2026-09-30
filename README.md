@@ -226,13 +226,17 @@ interface = true
 conditionalImports = Mapper:org.egovframe.rte.psl.dataaccess.mapper.Mapper
 
 [repository.jpa]
-classAnnotations = @Repository
 interface = true
 superClasses = JpaRepository,CrudRepository,PagingAndSortingRepository
 
 [repository.hibernate]
 classAnnotations = @Repository
 fieldTypes = HibernateTemplate,EntityManager,EntityManagerFactory,Session,SessionFactory
+
+[repository.mapstruct]
+classAnnotations = @Mapper
+interface = true
+conditionalImports = Mapper:org.mapstruct.Mapper
 ```
 Ini 파일 설정은 3개의 세션(`controller`, `service`, `repository`)과 
 `repository` 세션 밑에 5개의 하위 세션(`repository.ibatis`, `repository.mybatis`, `repository.mapper`, `repository.jpa`, `repository.hibernate`)로 구성되어 있습니다.

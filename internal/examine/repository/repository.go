@@ -13,6 +13,7 @@ import (
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/ibatis"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/jpa"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/mapper"
+	"github.com/switchover/eGovFrameChecker/internal/examine/repository/mapstruct"
 	"github.com/switchover/eGovFrameChecker/internal/examine/repository/mybatis"
 	"github.com/switchover/eGovFrameChecker/internal/i18n"
 	"github.com/switchover/eGovFrameChecker/internal/json"
@@ -46,13 +47,19 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 		}
 
 		superClassName := ""
-		result, listener, superClassName, isRepository, err := check(f)
+		result, listener, superClassName, isRepository, isMapstruct, err := check(f)
 		if err != nil {
 			if skipFileError {
 				log.Printf("Failed to examine file but skipped: %v\n", err)
 				continue
 			}
 			return err
+		}
+
+		if isMapstruct {
+			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it is a MapStruct mapper.%s\n",
+				c.Yellow, listener.ClassName, c.Reset))
+			continue
 		}
 
 		if !result && !isRepository && listener.IsInterface && len(listener.ClassAnnotations) == 0 {
@@ -138,7 +145,7 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 	return
 }
 
-func check(f string) (result bool, listener *java.Listener, superClassName string, isRepository bool, err error) {
+func check(f string) (result bool, listener *java.Listener, superClassName string, isRepository bool, isMapstruct bool, err error) {
 	data, err := os.ReadFile(f)
 	if err != nil {
 		return
@@ -152,6 +159,12 @@ func check(f string) (result bool, listener *java.Listener, superClassName strin
 
 	listener = &java.Listener{}
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.CompilationUnit())
+
+	result = mapstruct.Examine(listener)
+	if result {
+		isMapstruct = true
+		return
+	}
 
 	result, superClassName = ibatis.Examine(listener)
 	if result {
