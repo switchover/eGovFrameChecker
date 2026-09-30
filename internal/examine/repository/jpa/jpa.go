@@ -12,6 +12,5 @@ func Examine(listener *java.Listener) (result bool, isRepository bool) {
 	}
 	isRepository = true
 
-	result, _ = common.CheckClassAnnotations("repository.jpa", listener)
 	return
 }
