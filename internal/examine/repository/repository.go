@@ -57,7 +57,7 @@ func Examine(files []string, streamer *json.Streamer) (err error) {
 		}
 
 		if isMapstruct {
-			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it's a MapStruct's mapper.%s\n",
+			logList = append(logList, fmt.Sprintf("%s- Repository(%s) excluded because it is a MapStruct mapper.%s\n",
 				c.Yellow, listener.ClassName, c.Reset))
 			continue
 		}
